@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { ImageBackground, BackHandler, Image, Alert } from "react-native";
-import NfcManager, { NdefParser, NfcTech, } from 'react-native-nfc-manager';
+import NfcManager, { NdefParser, NfcTech } from 'react-native-nfc-manager';
 import styles from "./style";
 import {
   Text,
@@ -38,7 +38,8 @@ export default class Home extends Component {
       visible: false,
       checked: false,
       checkColors: ["5FFF49", "46FF2D", "#38FF1E", "#1DFF00"],
-      checkColor: "white"
+      checkColor: "white",
+      tagVerified:false
     };
   }
   componentDidMount() {
@@ -75,36 +76,45 @@ export default class Home extends Component {
 
   // }
   showCheck = () => {
-    this.setState({
-      checked: true
-    })
-    setTimeout(() => {
+    if(this.state.tag.type=="NDEF"){
       this.setState({
-        checkColor: this.state.checkColors[0]
+        checked: true
       })
-    }, 800);
-    setTimeout(() => {
-      this.setState({
-        checkColor: this.state.checkColors[1]
-      })
-    }, 500);
-    setTimeout(() => {
-      this.setState({
-        checkColor: this.state.checkColors[2]
-      })
-    }, 800);
-    setTimeout(() => {
-      this.setState({
-        checkColor: this.state.checkColors[2]
-      })
-    }, 1000);
-    setTimeout(() => {
-      this.props.navigation.navigate('History');
-      this.setState({
-        checked: false
-      })
-    }, 1000)
-
+      setTimeout(() => {
+        this.setState({
+          checkColor: this.state.checkColors[0]
+        })
+      }, 800);
+      setTimeout(() => {
+        this.setState({
+          checkColor: this.state.checkColors[1]
+        })
+      }, 500);
+      setTimeout(() => {
+        this.setState({
+          checkColor: this.state.checkColors[2]
+        })
+      }, 800);
+      setTimeout(() => {
+        this.setState({
+          checkColor: this.state.checkColors[2]
+        })
+      }, 1000);
+      setTimeout(() => {
+        this.props.navigation.navigate('History');
+        this.setState({
+          checked: false
+        })
+      }, 1000)  
+    }
+    else{
+      Alert.alert(
+        "Warning",
+        "This Medicine is UnAuthorized"
+      )
+      this.state.cancelTest();
+    }
+    
   }
   render() {
     let { enabled, tag, parsedText, isTestRunning } = this.state;
@@ -112,7 +122,6 @@ export default class Home extends Component {
     return (
       <View>
         {/* {!enabled && (alert("Please Turn on your Phones NFC First"))} */}
-        
         <View >
           <Header style={{ backgroundColor: '#1BB9C4' }}>
 
@@ -129,7 +138,7 @@ export default class Home extends Component {
             {/* <Right>
               <Button transparent>
                 <Icon
-                  type="MaterialCommunityIcons"
+                  type="MaterialCommungityIcons"
                   name="menu"
                   onPress={() => this.props.navigation.navigate('History')}
                 />
@@ -225,13 +234,15 @@ export default class Home extends Component {
       .then(() => NfcManager.requestTechnology(NfcTech.Ndef))
       .then(() => NfcManager.getTag())
       .then(tag => {
+        this.setState({ tag });
       })
       .then(() => NfcManager.getNdefMessage())
       .then(tag => {
         let parsedText = parseText(tag);
-        this.setState({ tag, parsedText });
-        console.log("tag data ",this.state.tag);
-
+        let text=JSON.parse(parsedText);
+        text.scannedtimes+=1;
+        this.setState({  parsedText:text });
+        console.log("state text ", this.state.parsedText);
         // this.setModalVisible(!this.state.modalVisible);
         // this.props.navigation.navigate('History');
         this.showCheck();
@@ -251,9 +262,7 @@ export default class Home extends Component {
       .then(enabled => this.setState({ enabled }))
 
   }
-  clearMessages = () => {
-    this.setState({ tag: null, parsedText: null }).catch(err => console.warn(err));
-  }
+  
   requestServer = () => {
     let DateObject = new Date;
     let currentDate = DateObject.toLocaleDateString();

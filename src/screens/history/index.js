@@ -73,6 +73,12 @@ export default class index extends Component {
                             </CardItem>
                             <CardItem style={styles.carditems}>
                                 <View>
+                                    <Text style={styles.headText}>Scanned</Text>
+                                    <Text style={styles.text}>4 Times</Text>
+                                </View>
+                            </CardItem>
+                            <CardItem style={styles.carditems}>
+                                <View>
                                     <Text style={styles.headText}>Manufacturing Date</Text>
                                     <Text style={styles.text}>10/2018</Text>
                                 </View>
