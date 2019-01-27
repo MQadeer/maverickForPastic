@@ -43,10 +43,9 @@ export default (styles = {
   backgroundVideo: {
 
     position:"absolute",
-    height:100,
-    width:100,
-    top:-200,
-    left:-90
+    height:400,
+    width:470,
+    
   },
   
 });

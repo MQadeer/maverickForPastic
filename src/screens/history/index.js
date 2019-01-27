@@ -12,7 +12,8 @@ export default class index extends Component {
         super(props);
         this.state = {
             modalVisible: false,
-            progress: true
+            progress: true,
+            medicine: {}
 
         };
     }
@@ -22,6 +23,9 @@ export default class index extends Component {
 
             return true;
         });
+        this.setState({
+            medicine: this.props.navigation.getParam("medicine", {})
+        })
     }
 
     componentWillUnmount() {
@@ -31,7 +35,6 @@ export default class index extends Component {
 
     gotoOnlineVerification = () => {
         setTimeout(() => {
-
             this.props.navigation.navigate('Verification')
         }, 3000)
 
@@ -49,7 +52,7 @@ export default class index extends Component {
                     style={{ height: '100%', width: '100%' }}>
                     <View style={{ marginBottom: 20 }}>
                         <Card style={styles.cards}>
-                            <CardItem style={{ margin:0,padding:0, justifyContent: "center" }}>
+                            <CardItem style={{ margin: 0, padding: 0, justifyContent: "center" }}>
                                 {/* <Button
                                         light
                                         style={styles.cardBtn}
@@ -68,48 +71,39 @@ export default class index extends Component {
                             <CardItem style={styles.carditems}>
                                 <View>
                                     <Text style={styles.headText}>Medicine Name</Text>
-                                    <Text style={styles.text}>Acefyl Cough Syrup</Text>
+                                    <Text style={styles.text}>{this.state.medicine.name}</Text>
                                 </View>
                             </CardItem>
                             <CardItem style={styles.carditems}>
                                 <View>
                                     <Text style={styles.headText}>Scanned</Text>
-                                    <Text style={styles.text}>4 Times</Text>
+                                    <Text style={styles.text}>{this.state.medicine.scannedtimes}</Text>
                                 </View>
                             </CardItem>
                             <CardItem style={styles.carditems}>
                                 <View>
                                     <Text style={styles.headText}>Manufacturing Date</Text>
-                                    <Text style={styles.text}>10/2018</Text>
+                                    <Text style={styles.text}>{this.state.medicine.MFG}</Text>
                                 </View>
                             </CardItem>
                             <CardItem style={styles.carditems}>
                                 <View>
                                     <Text style={styles.headText}>Expiry</Text>
-                                    <Text style={styles.text}>10/2020</Text>
+                                    <Text style={styles.text}>{this.state.medicine.expiry}</Text>
                                 </View>
                             </CardItem>
                             <CardItem style={styles.carditems}>
                                 <View>
                                     <Text style={styles.headText}>Batch ID</Text>
-                                    <Text style={styles.text}>10634</Text>
+                                    <Text style={styles.text}>{this.state.medicine.batchId}</Text>
                                 </View>
                             </CardItem>
                             <CardItem style={styles.carditems}>
                                 <View>
                                     <Text style={styles.headText}>Company Name</Text>
-                                    <Text style={styles.text}>Nabiqasim Industeries</Text>
+                                    <Text style={styles.text}>{this.state.medicine.company}</Text>
                                 </View>
                             </CardItem>
-                            <CardItem style={styles.carditems}>
-                                <View>
-                                    <Text style={styles.headText}>Company ID</Text>
-                                    <Text style={styles.text}>144</Text>
-                                </View>
-                            </CardItem>
-                            
-
-
                         </Card>
                     </View>
                 </ImageBackground>
@@ -118,5 +112,30 @@ export default class index extends Component {
 
 
         )
+    }
+
+    meddicineCheckRequest = () => {
+        let DateObject = new Date;
+        let currentDate = DateObject.toLocaleDateString();
+        fetch('http://192.168.1.6:8888/checkSyrup',
+            {
+                method: "POST",
+                headers: {
+                    "Accept": 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ data: this.state.parsedText, user: this.props.user, CurrentTime: currentDate }),
+            }
+        )
+            .then(res => {
+                alert(JSON.stringify(JSON.parse(res._bodyInit.body)));
+                //res.json();
+            })
+            // .then(info => {
+            //   alert(JSON.stringify( info._bodyInit))
+            // })
+            .catch(err => {
+                alert(err)
+            })
     }
 }

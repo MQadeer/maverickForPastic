@@ -20,6 +20,21 @@ import {
 import Ripple from 'react-native-material-ripple';
 import Video from 'react-native-video';
 
+
+function strToBytes(str) {
+  let result = [];
+  for (let i = 0; i < str.length; i++) {
+    result.push(str.charCodeAt(i));
+  }
+  return result;
+}
+function buildTextPayload(valueToWrite) {
+  const textBytes = strToBytes(valueToWrite);
+  // in this example. we always use `en`
+  const headerBytes = [0xD1, 0x01, (textBytes.length + 3), 0x54, 0x02, 0x65, 0x6e];
+  return [...headerBytes, ...textBytes];
+}
+
 export default class Home extends Component {
 
   static navigationOptions = {
@@ -39,7 +54,7 @@ export default class Home extends Component {
       checked: false,
       checkColors: ["5FFF49", "46FF2D", "#38FF1E", "#1DFF00"],
       checkColor: "white",
-      tagVerified:false
+      tagVerified: false
     };
   }
   componentDidMount() {
@@ -76,7 +91,8 @@ export default class Home extends Component {
 
   // }
   showCheck = () => {
-    if(this.state.tag.type=="NDEF"){
+    // if(this.state.tag.type=="NDEF")
+    if (true) {
       this.setState({
         checked: true
       })
@@ -101,20 +117,20 @@ export default class Home extends Component {
         })
       }, 1000);
       setTimeout(() => {
-        this.props.navigation.navigate('History');
+        this.props.navigation.navigate('History', { medicine: this.state.parsedText });
         this.setState({
           checked: false
         })
-      }, 1000)  
+      }, 1000)
     }
-    else{
+    else {
       Alert.alert(
         "Warning",
         "This Medicine is UnAuthorized"
       )
       this.state.cancelTest();
     }
-    
+
   }
   render() {
     let { enabled, tag, parsedText, isTestRunning } = this.state;
@@ -122,6 +138,9 @@ export default class Home extends Component {
     return (
       <View>
         {/* {!enabled && (alert("Please Turn on your Phones NFC First"))} */}
+        {
+          console.log(this.props.navigation.getParam("user", null))
+        }
         <View >
           <Header style={{ backgroundColor: '#1BB9C4' }}>
 
@@ -155,15 +174,9 @@ export default class Home extends Component {
 
         <View style={styles.screenOverlay}>
 
-          <Video source={require("../../media/animation.mp4")}   // Can be a URL or a local file.
-            ref={(ref) => {
-              this.player = ref
-            }}
-            repeat
+          <Image source={require("../../media/tutorial.gif")}   // Can be a URL or a local file.
             style={styles.backgroundVideo} />
-
-          {/* <Image style={{ height: 300, width: 280, marginLeft: 70, borderWidth: 2, }}
-            source={require("../../media/tutorial.gif")} /> */}
+            
           <Ripple onPress={() => setTimeout(() => {
             this.runTest()
           }, 200)}>
@@ -229,25 +242,32 @@ export default class Home extends Component {
       }
       return null;
     }
+    const textToWrite = (text) => {
+      this.state.parsedText.scannedtimes += 1;
+
+      return JSON.stringify(text)
+    }
     this.setState({ isTestRunning: true });
     NfcManager.registerTagEvent(tag => console.log(tag))
       .then(() => NfcManager.requestTechnology(NfcTech.Ndef))
       .then(() => NfcManager.getTag())
       .then(tag => {
-        this.setState({ tag });
       })
       .then(() => NfcManager.getNdefMessage())
       .then(tag => {
+        console.log("tag set ", tag)
         let parsedText = parseText(tag);
-        let text=JSON.parse(parsedText);
-        text.scannedtimes+=1;
-        this.setState({  parsedText:text });
+        parsedText = JSON.parse(parsedText);
+        parsedText.scannedtimes += 1;
+        this.setState({ tag, parsedText });
+        console.log("state tag ", this.state.tag);
         console.log("state text ", this.state.parsedText);
-        // this.setModalVisible(!this.state.modalVisible);
-        // this.props.navigation.navigate('History');
+        return parsedText
+      }).then((text) => { NfcManager.writeNdefMessage(buildTextPayload(JSON.stringify(text))) })
+      .then(cleanUp)
+      .then(() => {
         this.showCheck();
       })
-      .then(cleanUp)
 
   }
   cancelTest = () => {
@@ -262,7 +282,7 @@ export default class Home extends Component {
       .then(enabled => this.setState({ enabled }))
 
   }
-  
+
   requestServer = () => {
     let DateObject = new Date;
     let currentDate = DateObject.toLocaleDateString();

@@ -3,8 +3,8 @@ import {
     AppRegistry,
     ScrollView,
     Image,
-    View,NetInfo
-
+    View,NetInfo,
+    Alert
 } from 'react-native';
 // import NfcScanner from './components/NFCscanner';
 import Navigation from '../navigation-setup/Setup';
@@ -22,20 +22,29 @@ export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            logedin: true,
-            user: {}
+            logedin: false,
+            user: {},
+            position:null
         }
         this.azureInstance = new AzureInstance(credentials);
 
         this._onLoginSuccess = this._onLoginSuccess.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
         NetInfo.isConnected.fetch().then(isConnected => {
-            console.log("hellooooooooo  "+isConnected);
             this.setState({
                 logedin:!isConnected
             })
+            navigator.geolocation.getCurrentPosition((position)=>{
+                console.log("position is ",position)
+                this.setState({
+                    position
+                })
+            },(err)=>{
+                console.log("err is ",err)
+            },
+            {enableHighAccuracy:true,timeout:20000,maximumAge:1000})
         });
     }
     _onLoginSuccess() {
@@ -52,6 +61,7 @@ export default class Login extends React.Component {
             // return result.json();
         }).catch(err => {
             // console.log(err);
+            Alert.alert("Network Error","check your Network Connection or  Restart the App and Login Again")
             alert(err, " check your Network Connection or  Restart the App and Login Again ")
         })
 
