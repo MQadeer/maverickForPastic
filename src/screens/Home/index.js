@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ImageBackground, BackHandler, Image, Alert } from "react-native";
+import { ImageBackground, BackHandler, Image, Alert,ToastAndroid } from "react-native";
 import NfcManager, { NdefParser, NfcTech } from 'react-native-nfc-manager';
 import styles from "./style";
 import {
@@ -54,7 +54,8 @@ export default class Home extends Component {
       checked: false,
       checkColors: ["5FFF49", "46FF2D", "#38FF1E", "#1DFF00"],
       checkColor: "white",
-      tagVerified: false
+      tagVerified: false,
+      user:{}
     };
   }
   componentDidMount() {
@@ -65,7 +66,19 @@ export default class Home extends Component {
           this.startNfc();
         }
       })
+      this.setState({
+        user:this.props.screenProps
+      })
+  
     BackHandler.addEventListener('hardwareBackPress', () => {
+      ToastAndroid.showWithGravityAndOffset(
+        'A wild toast appeared!',
+        ToastAndroid.LONG,
+        ToastAndroid.TOP,
+        25,
+        50,
+      );
+      ToastAndroid.show('click again to exit app ',ToastAndroid.LONG)
       this.props.navigation.closeDrawer();
       return true;
     })
@@ -134,12 +147,11 @@ export default class Home extends Component {
   }
   render() {
     let { enabled, tag, parsedText, isTestRunning } = this.state;
-
     return (
       <View>
         {/* {!enabled && (alert("Please Turn on your Phones NFC First"))} */}
         {
-          console.log(this.props.navigation.getParam("user", null))
+          console.log("screen props are ",this.state.user)
         }
         <View >
           <Header style={{ backgroundColor: '#1BB9C4' }}>

@@ -20,7 +20,7 @@ export default class index extends Component {
     componentDidMount() {
         this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
             this.props.navigation.navigate('Homes');
-
+            
             return true;
         });
         this.setState({
@@ -63,7 +63,7 @@ export default class index extends Component {
                                         }}> Verify Online </Text>
 
                                     </Button> */}
-                                <AwesomeButton progress backgroundColor="#1BB9C4" style={{ textColor: "white" }}
+                                <AwesomeButton progress backgroundColor="#1BB9C4" style={{ color: "white" }}
                                     onPress={this.gotoOnlineVerification} >
                                     <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 25, backgroundColor: "#1BB9C4" }}>Verify Online</Text>
                                 </AwesomeButton>

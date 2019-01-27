@@ -6,7 +6,6 @@ export default class Splash extends Component {
     super(props);
     this.state = {};
   }
-  //   source={require("../../media/splash.jpg")}
   render() {
     return (
       <View style={{flex:1,justifyContent:'center'}}>
