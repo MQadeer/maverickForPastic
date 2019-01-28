@@ -67,7 +67,7 @@ export default class Home extends Component {
         }
       })
       this.setState({
-        user:this.props.screenProps
+        user:this.props.screenProps.user
       })
   
     BackHandler.addEventListener('hardwareBackPress', () => {
@@ -130,7 +130,7 @@ export default class Home extends Component {
         })
       }, 1000);
       setTimeout(() => {
-        this.props.navigation.navigate('History', { medicine: this.state.parsedText });
+        this.props.navigation.navigate('History', { medicine: this.state.parsedText,user:this.state.user });
         this.setState({
           checked: false
         })

@@ -27,7 +27,7 @@ server.post("/checkSyrup", function (req, res) {
     });
 })
 
-server.post("/user",function(req,res){
+server.post("/addUser",function(req,res){
     console.log(req.body);
     pharmaController.addUser(req.body,function(err,data){
         res.json({payload:data});

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     Image,
-    View, NetInfo, BackAndroid, BackHandler,
+    View, NetInfo, BackHandler,
     Alert
 } from 'react-native';
 // import NfcScanner from './components/NFCscanner';
@@ -34,9 +34,9 @@ export default class Login extends React.Component {
             this.setState({
                 logedin: !isConnected
             })
-            if (isConnected) {
-                this.getLocation();
-            }
+            // if (isConnected) {
+            //     this.getLocation();
+            // }
         });
     }
 
@@ -72,8 +72,8 @@ export default class Login extends React.Component {
                 user: {
                     name: result.displayName,
                     email: result.userPrincipalName,
-                    city:this.state.position.city,
-                    country:this.state.position.country
+                    // city:this.state.position.city,
+                    // country:this.state.position.country
                 }
             })
             // this.addUsertoDB();
@@ -81,8 +81,9 @@ export default class Login extends React.Component {
         }).catch(err => {
             // console.log(err);
             Alert.alert("Network Error", "check your Internet Connection and Login Again"
-            ,[{text:"Ok",onPress:()=>{BackHandler.exitApp()}}
-            ])
+            // ,[{text:"Ok",onPress:()=>{BackHandler.exitApp()}}
+            // ])
+            )
         })
 
 
@@ -90,7 +91,7 @@ export default class Login extends React.Component {
 
     addUsertoDB() {
         console.log(this.state.user);
-        fetch('http://192.168.1.6:8888/user', {
+        fetch('http://192.168.1.6:8888/addUser', {
             method: "POST",
             headers: {
                 "Accept": 'application/json',
@@ -109,7 +110,7 @@ export default class Login extends React.Component {
         return (
 
             <View style={{ flex: 1 }}>
-                {this.state.logedin ? <Navigation screenProps={this.state.user} /> : <AzureLoginView
+                {this.state.logedin ? <Navigation screenProps={{user:this.state.user}} /> : <AzureLoginView
                     azureInstance={this.azureInstance}
                     loadingMessage={<Image style={{ height: 250, width: 250, marginTop: -70 }} source={require('../media/200.gif')} />}
                     onSuccess={this._onLoginSuccess}

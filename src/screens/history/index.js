@@ -13,18 +13,20 @@ export default class index extends Component {
         this.state = {
             modalVisible: false,
             progress: true,
-            medicine: {}
+            medicine: {},
+            user:{}
 
         };
     }
     componentDidMount() {
         this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
             this.props.navigation.navigate('Homes');
-            
+
             return true;
         });
         this.setState({
-            medicine: this.props.navigation.getParam("medicine", {})
+            medicine: this.props.navigation.getParam("medicine", {}),
+            user:this.props.navigation.getParam("user", {})
         })
     }
 
@@ -111,6 +113,32 @@ export default class index extends Component {
             </View>
 
 
+        )
+    }
+
+
+    getLocation = () => {
+
+        navigator.geolocation.getCurrentPosition((location) => {
+            console.log("position is ", location)
+            if (location) {
+                geocoder.geocodePosition({ lat: location.coords.latitude, lng: location.coords.longitude }).then(res => {
+
+                    this.setState({
+                        position: { city: res[0].locality, country: res[0].country }
+                    })
+                    console.log("city name ", this.state.position.city, " Countrey name ", this.state.position.country);
+                })
+            }
+        }, (err) => {
+            console.log("err is ", err);
+            Alert.alert("Network error", "check your internet connection and try again", [
+                { text: "Ok", onPress: () => { this.props.navigation.navigate('history',
+                {user:this.state.user,medicine:this.state.medicine})} }
+            ]);
+
+        },
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
         )
     }
 
