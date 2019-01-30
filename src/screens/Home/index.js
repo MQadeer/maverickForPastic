@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ImageBackground, BackHandler, Image, Alert,ToastAndroid } from "react-native";
+import { ImageBackground, BackHandler, Image, Alert, ToastAndroid } from "react-native";
 import NfcManager, { NdefParser, NfcTech } from 'react-native-nfc-manager';
 import styles from "./style";
 import {
@@ -55,7 +55,7 @@ export default class Home extends Component {
       checkColors: ["5FFF49", "46FF2D", "#38FF1E", "#1DFF00"],
       checkColor: "white",
       tagVerified: false,
-      user:{}
+      user: {}
     };
   }
   componentDidMount() {
@@ -66,10 +66,10 @@ export default class Home extends Component {
           this.startNfc();
         }
       })
-      this.setState({
-        user:this.props.screenProps.user
-      })
-  
+    this.setState({
+      user: this.props.screenProps.user
+    })
+
     BackHandler.addEventListener('hardwareBackPress', () => {
       ToastAndroid.showWithGravityAndOffset(
         'A wild toast appeared!',
@@ -78,7 +78,7 @@ export default class Home extends Component {
         25,
         50,
       );
-      ToastAndroid.show('click again to exit app ',ToastAndroid.LONG)
+      ToastAndroid.show('click again to exit app ', ToastAndroid.LONG)
       this.props.navigation.closeDrawer();
       return true;
     })
@@ -93,18 +93,9 @@ export default class Home extends Component {
   openDrawer = () => {
     this.props.navigation.toggleDrawer();
   };
-  // setModalVisible(visible) {
-  //   this.setState({modalVisible: visible});
-  //   setTimeout(()=>{
-  //     this.setState({
-  //       modalVisible:false
-  //     })
-  //     this.props.navigation.navigate('History');
-  //   },3000)
-
-  // }
+  
   showCheck = () => {
-    // if(this.state.tag.type=="NDEF")
+    
     if (true) {
       this.setState({
         checked: true
@@ -130,7 +121,7 @@ export default class Home extends Component {
         })
       }, 1000);
       setTimeout(() => {
-        this.props.navigation.navigate('History', { medicine: this.state.parsedText,user:this.state.user });
+        this.props.navigation.navigate('History', { medicine: this.state.parsedText, user: this.state.user });
         this.setState({
           checked: false
         })
@@ -151,7 +142,7 @@ export default class Home extends Component {
       <View>
         {/* {!enabled && (alert("Please Turn on your Phones NFC First"))} */}
         {
-          console.log("screen props are ",this.state.user)
+          console.log("screen props are ", this.state.user)
         }
         <View >
           <Header style={{ backgroundColor: '#1BB9C4' }}>
@@ -166,29 +157,13 @@ export default class Home extends Component {
             <Body style={{ alignItems: 'center', marginRight: 70 }}>
               <Title style={{ fontSize: 20 }}>Home</Title>
             </Body>
-            {/* <Right>
-              <Button transparent>
-                <Icon
-                  type="MaterialCommungityIcons"
-                  name="menu"
-                  onPress={() => this.props.navigation.navigate('History')}
-                />
-              </Button>
-            </Right> */}
           </Header>
         </View>
-
-        {/* <Image
-            style={{height:200,width:200, marginLeft:100,marginTop:120}} 
-            source={require("../../media/logo.png")}/> */}
-
-
-
         <View style={styles.screenOverlay}>
 
           <Image source={require("../../media/tutorial.gif")}   // Can be a URL or a local file.
             style={styles.backgroundVideo} />
-            
+
           <Ripple onPress={() => setTimeout(() => {
             this.runTest()
           }, 200)}>
@@ -280,44 +255,16 @@ export default class Home extends Component {
       .then(() => {
         this.showCheck();
       })
-
   }
   cancelTest = () => {
     console.disableYellowBox = true;
     NfcManager.cancelTechnologyRequest();
     this.setState({ isTestRunning: false });
-
   }
   startNfc = () => {
     NfcManager.start()
       .then(() => NfcManager.isEnabled())
       .then(enabled => this.setState({ enabled }))
-
-  }
-
-  requestServer = () => {
-    let DateObject = new Date;
-    let currentDate = DateObject.toLocaleDateString();
-    fetch('http://192.168.1.6:8888/checkSyrup',
-      {
-        method: "POST",
-        headers: {
-          "Accept": 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ data: this.state.parsedText, user: this.props.user, CurrentTime: currentDate }),
-      }
-    )
-      .then(res => {
-        alert(JSON.stringify(JSON.parse(res._bodyInit.body)));
-        //res.json();
-      })
-      // .then(info => {
-      //   alert(JSON.stringify( info._bodyInit))
-      // })
-      .catch(err => {
-        alert(err)
-      })
   }
 }
 

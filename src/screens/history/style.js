@@ -3,27 +3,23 @@ import { StyleSheet, Dimensions } from "react-native";
 
 export const styles = StyleSheet.create({
     text:{
-        
-       
         fontSize:15,
-        
-        
     },
     headText:{
         fontSize:20,
         color:'black'      
     },
     cards:{
-        marginTop:20,
+        marginTop:5,
         marginRight:10,
         marginLeft:10,
-        marginBottom:20,
+        marginBottom:10,
         backgroundColor:"white"
     },
     carditems:{
         marginRight:14,
         marginLeft:14,
-        margin:0,
+        
         borderBottomWidth:1,
         borderBottomColor:"#ffa502"
     },

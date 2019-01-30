@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ImageBackground, Text, View, BackHandler, ScrollView } from 'react-native';
+import { ImageBackground, Text, View, BackHandler, ScrollView,Alert } from 'react-native';
 import {
     Button,
     Card, CardItem, Right
@@ -14,7 +14,8 @@ export default class index extends Component {
             modalVisible: false,
             progress: true,
             medicine: {},
-            user:{}
+            user:{},
+            location:{}
 
         };
     }
@@ -28,6 +29,8 @@ export default class index extends Component {
             medicine: this.props.navigation.getParam("medicine", {}),
             user:this.props.navigation.getParam("user", {})
         })
+        Alert.alert("Notification","Click Verify Online button only if you are buying this Medicine")
+
     }
 
     componentWillUnmount() {
@@ -36,10 +39,7 @@ export default class index extends Component {
     }
 
     gotoOnlineVerification = () => {
-        setTimeout(() => {
-            this.props.navigation.navigate('Verification')
-        }, 3000)
-
+        this.getLocation();
     }
     render() {
         return (
@@ -54,6 +54,7 @@ export default class index extends Component {
                     style={{ height: '100%', width: '100%' }}>
                     <View style={{ marginBottom: 20 }}>
                         <Card style={styles.cards}>
+                            
                             <CardItem style={{ margin: 0, padding: 0, justifyContent: "center" }}>
                                 {/* <Button
                                         light
@@ -78,8 +79,8 @@ export default class index extends Component {
                             </CardItem>
                             <CardItem style={styles.carditems}>
                                 <View>
-                                    <Text style={styles.headText}>Scanned</Text>
-                                    <Text style={styles.text}>{this.state.medicine.scannedtimes}</Text>
+                                    <Text style={styles.headText}>No of Times Scanned </Text>
+                                    <Text style={styles.text}>{this.state.medicine.scannedtimes }</Text>
                                 </View>
                             </CardItem>
                             <CardItem style={styles.carditems}>
@@ -106,6 +107,7 @@ export default class index extends Component {
                                     <Text style={styles.text}>{this.state.medicine.company}</Text>
                                 </View>
                             </CardItem>
+                            
                         </Card>
                     </View>
                 </ImageBackground>
@@ -121,19 +123,17 @@ export default class index extends Component {
 
         navigator.geolocation.getCurrentPosition((location) => {
             console.log("position is ", location)
-            if (location) {
-                geocoder.geocodePosition({ lat: location.coords.latitude, lng: location.coords.longitude }).then(res => {
-
-                    this.setState({
-                        position: { city: res[0].locality, country: res[0].country }
-                    })
-                    console.log("city name ", this.state.position.city, " Countrey name ", this.state.position.country);
+            if(location){
+                this.setState({
+                    location:{latitude:location.coords.latitude,longitude:location.coords.longitude}
                 })
+                this.meddicineCheckRequest();
             }
+            
         }, (err) => {
             console.log("err is ", err);
             Alert.alert("Network error", "check your internet connection and try again", [
-                { text: "Ok", onPress: () => { this.props.navigation.navigate('history',
+                { text: "Ok", onPress: () => { this.props.navigation.navigate('Homes',
                 {user:this.state.user,medicine:this.state.medicine})} }
             ]);
 
@@ -145,24 +145,21 @@ export default class index extends Component {
     meddicineCheckRequest = () => {
         let DateObject = new Date;
         let currentDate = DateObject.toLocaleDateString();
-        fetch('http://192.168.1.6:8888/checkSyrup',
+        fetch('http://192.168.1.21:8888/checkMedicine',
             {
                 method: "POST",
                 headers: {
                     "Accept": 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ data: this.state.parsedText, user: this.props.user, CurrentTime: currentDate }),
+                body: JSON.stringify({ medicineInfo: {info:this.state.medicine,buyingDate:currentDate,
+                    location:this.state.location}, user: this.state.user}),
             }
         )
             .then(res => {
-                alert(JSON.stringify(JSON.parse(res._bodyInit.body)));
-                //res.json();
-            })
-            // .then(info => {
-            //   alert(JSON.stringify( info._bodyInit))
-            // })
-            .catch(err => {
+                console.log("res parsed  ",JSON.parse(res._bodyText));
+                this.props.navigation.navigate('Verification',{ verifiedMedicine:JSON.parse(res._bodyText)})
+            }).catch(err => {
                 alert(err)
             })
     }

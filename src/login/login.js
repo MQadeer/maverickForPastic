@@ -34,9 +34,7 @@ export default class Login extends React.Component {
             this.setState({
                 logedin: !isConnected
             })
-            // if (isConnected) {
-            //     this.getLocation();
-            // }
+            
         });
     }
 
@@ -54,7 +52,6 @@ export default class Login extends React.Component {
                 })
             }
         }, (err) => {
-            console.log("err is ", err);
             Alert.alert("Network error","check your internet connection and try again",[
                 {text:"Ok",onPress:()=>{BackHandler.exitApp()}}
             ]);
@@ -68,30 +65,32 @@ export default class Login extends React.Component {
         this.azureInstance.getUserInfo().then(result => {
             console.log(result);
             this.setState({
-                logedin: true,
+                
                 user: {
                     name: result.displayName,
                     email: result.userPrincipalName,
-                    // city:this.state.position.city,
-                    // country:this.state.position.country
                 }
             })
-            // this.addUsertoDB();
+            this.addUsertoDB();
+             
+             this.setState({
+                logedin: true,
+            })
             // return result.json();
         }).catch(err => {
-            // console.log(err);
             Alert.alert("Network Error", "check your Internet Connection and Login Again"
-            // ,[{text:"Ok",onPress:()=>{BackHandler.exitApp()}}
-            // ])
-            )
+            ,[{text:"Ok",onPress:()=>{BackHandler.exitApp()}}
+            ])
+            
         })
 
 
     };
 
     addUsertoDB() {
+        let medicineBought=[];
         console.log(this.state.user);
-        fetch('http://192.168.1.6:8888/addUser', {
+        fetch('http://192.168.1.21:8888/addUser', {
             method: "POST",
             headers: {
                 "Accept": 'application/json',
@@ -100,8 +99,17 @@ export default class Login extends React.Component {
 
             body: JSON.stringify(this.state.user)
         }).then(res => {
-            alert(JSON.parse(res))
+            console.log("user res  ",JSON.parse(res._bodyText))
+            resp=JSON.parse(res._bodyText);
+            this.setState({
+                user:{
+                    name:this.state.user.name,
+                    email:this.state.user.email,
+                    medicineBought:resp.medicineBought
+                }
+            })
         })
+        
     }
 
     render() {

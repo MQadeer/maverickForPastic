@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Syrups = new Schema({
+
+const Medicines = new Schema({
     serialNo: {
         type: String,
         required: true
@@ -11,9 +12,7 @@ const Syrups = new Schema({
         required: true
     },
     manufacturingDate: {
-        type: Date,
-        default: Date.now,
-
+        type: String,
     },
     manufacturerName: {
         type: String,
@@ -26,14 +25,21 @@ const Syrups = new Schema({
         type: String,
         required: true
     },
-    openedOnDate:{
+    soldOnDate:{
         type:Array
+    },
+    batchId:{
+        type:String
+    },
+    companyId:{
+        type:String
     }
+
 
 })
 
 
-const Syrupsdb = mongoose.model('Syrups', Syrups);
-module.exports = Syrupsdb;
+const Medicinesdb = mongoose.model('Medicines', Medicines);
+module.exports = Medicinesdb;
 
 

@@ -32,6 +32,7 @@ export default class index extends Component {
     render() {
         return (
             <View style={{ flex: 1 }}>
+            {alert(JSON.stringify(this.props.navigation.getParam('verifiedMedicine',{})))}
                 <View>
                     <Text style={{
                         fontSize: 28, color: "white", padding: 10, textAlign: "center", fontFamily: 'Algerian',
