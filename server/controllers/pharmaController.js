@@ -62,7 +62,11 @@ module.exports = {
                     });
             })
     },
-
+    getMed:(data,cb)=>{
+        Users.findOne({ userName: data.name, userEmail: data.email }, function (err, info) {
+            cb(err,info);
+        })
+    },
     addUser: (userInfo, cb) => {
         Users.findOne({ userName: userInfo.name, userEmail: userInfo.email }, function (err, user) {
             if (user == null) {

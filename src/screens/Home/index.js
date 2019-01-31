@@ -55,7 +55,7 @@ export default class Home extends Component {
       checkColors: ["5FFF49", "46FF2D", "#38FF1E", "#1DFF00"],
       checkColor: "white",
       tagVerified: false,
-      user: {}
+      user: {},
     };
   }
   componentDidMount() {
@@ -83,6 +83,7 @@ export default class Home extends Component {
       return true;
     })
   }
+  
   componentWillUnmount() {
     this.backHandler.remove();
   }
@@ -145,7 +146,7 @@ export default class Home extends Component {
           console.log("screen props are ", this.state.user)
         }
         <View >
-          <Header style={{ backgroundColor: '#1BB9C4' }}>
+          <Header style={{ backgroundColor: '#1BB9C4', }}>
 
             <Left>
 
@@ -161,8 +162,8 @@ export default class Home extends Component {
         </View>
         <View style={styles.screenOverlay}>
 
-          <Image source={require("../../media/tutorial.gif")}   // Can be a URL or a local file.
-            style={styles.backgroundVideo} />
+          {/* <Image source={require("../../media/tutorial.gif")}   // Can be a URL or a local file.
+            style={styles.backgroundVideo} /> */}
 
           <Ripple onPress={() => setTimeout(() => {
             this.runTest()
@@ -177,24 +178,7 @@ export default class Home extends Component {
               /> : <Ripple>
                   <Text style={{ color: "white", fontWeight: 'bold', fontSize: 25, }}> IDENTIFY </Text></Ripple>}
             </Button></Ripple>
-          {/* {!isTestRunning && (
-             <View>
-             <Image style={{height:300,width:280, marginLeft:70,borderWidth:2,}} 
-             source={require("../../media/tutorial.gif")}/>
-           <Ripple onPress={() => setTimeout(()=>{
-            this.runTest()
-           },200)}>
-           <Button
-              light
-              backgroundColor="#21DDE9"
-              style={styles.centeredBtn}
-              onPress={() => this.runTest()}
-            >
-            {this.state.checked ? <Icon  type="AntDesign" name="checkcircleo" style={{color:this.state.checkColor,fontSize:80}} 
-            /> :<Ripple>
-              <Text style={{ color: "white", fontWeight: 'bold', fontSize: 35 }}> Start </Text></Ripple>}
-            </Button></Ripple></View>
-          )} */}
+          
 
           {/* {isTestRunning && (
             <View>
@@ -209,9 +193,6 @@ export default class Home extends Component {
             </Button>
             </View>
           )} */}
-          {/* <TouchableOpacity style={{ marginTop: 20, alignItems: 'center' }} onPress={this.requestServer.bind(this)}>
-              <Text style={{ color: 'blue' }}>request server </Text>
-            </TouchableOpacity> */}
         </View>
 
       </View>
@@ -266,5 +247,6 @@ export default class Home extends Component {
       .then(() => NfcManager.isEnabled())
       .then(enabled => this.setState({ enabled }))
   }
+  
 }
 

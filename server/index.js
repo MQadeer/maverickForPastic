@@ -42,6 +42,13 @@ server.post("/addUser",function(req,res){
     })
 })
 
+server.post("/getMeds",function(req,res){
+    pharmaController.getMed(req.body,function(err,data){
+        res.json(data);
+    })
+})
+
+
 
 server.use("/authentication", pharmaRouter);
 const port = 8888;

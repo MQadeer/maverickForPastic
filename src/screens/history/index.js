@@ -11,7 +11,6 @@ export default class index extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            modalVisible: false,
             progress: true,
             medicine: {},
             user:{},
@@ -107,14 +106,10 @@ export default class index extends Component {
                                     <Text style={styles.text}>{this.state.medicine.company}</Text>
                                 </View>
                             </CardItem>
-                            
                         </Card>
                     </View>
                 </ImageBackground>
-
             </View>
-
-
         )
     }
 
@@ -129,14 +124,12 @@ export default class index extends Component {
                 })
                 this.meddicineCheckRequest();
             }
-            
         }, (err) => {
             console.log("err is ", err);
             Alert.alert("Network error", "check your internet connection and try again", [
                 { text: "Ok", onPress: () => { this.props.navigation.navigate('Homes',
                 {user:this.state.user,medicine:this.state.medicine})} }
             ]);
-
         },
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
         )
@@ -145,7 +138,7 @@ export default class index extends Component {
     meddicineCheckRequest = () => {
         let DateObject = new Date;
         let currentDate = DateObject.toLocaleDateString();
-        fetch('http://192.168.1.21:8888/checkMedicine',
+        fetch('http://192.168.1.16:8888/checkMedicine',
             {
                 method: "POST",
                 headers: {
@@ -160,7 +153,9 @@ export default class index extends Component {
                 console.log("res parsed  ",JSON.parse(res._bodyText));
                 this.props.navigation.navigate('Verification',{ verifiedMedicine:JSON.parse(res._bodyText)})
             }).catch(err => {
-                alert(err)
+               Alert.alert("Network error","Check Your internet connection or login again ",[
+                   {text:"ok",onPress:()=>{this.props.navigation.navigate('Homes')}}
+               ])
             })
     }
 }
