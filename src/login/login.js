@@ -88,7 +88,7 @@ export default class Login extends React.Component {
         console.disableYellowBox = true;
         return (
             <View style={{ flex: 1 }}>
-                {this.state.logedin ? <Navigation screenProps={{ user: this.state.user, medicineBought:this.state.medicineBought }} /> : <AzureLoginView
+                {true ? <Navigation screenProps={{ user: this.state.user, medicineBought:this.state.medicineBought }} /> : <AzureLoginView
                     azureInstance={this.azureInstance}
                     loadingMessage={<Image style={{ height: 250, width: 250, marginTop: -70 }} source={require('../media/200.gif')} />}
                     onSuccess={this._onLoginSuccess}

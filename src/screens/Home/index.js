@@ -146,11 +146,12 @@ export default class Home extends Component {
           console.log("screen props are ", this.state.user)
         }
         <View >
-          <Header style={{ backgroundColor: '#1BB9C4', }}>
+          <Header style={{ backgroundColor: '#1BB9C4' }}>
 
             <Left>
 
-              <Button transparent onPress={this.openDrawer}>
+              <Button transparent onPress={this.openDrawer} 
+              style={{}} >
                 <Icon type="SimpleLineIcons"
                   name="menu" onPress={this.openDrawer} />
               </Button>
@@ -160,10 +161,12 @@ export default class Home extends Component {
             </Body>
           </Header>
         </View>
-        <View style={styles.screenOverlay}>
+        
 
+        <View style={styles.screenOverlay}>
+        <ImageBackground source={require('../../media/back.jpeg')} style={{ height: '100%', width: '100%',opacity:0.3 }}>
           {/* <Image source={require("../../media/tutorial.gif")}   // Can be a URL or a local file.
-            style={styles.backgroundVideo} /> */}
+            style={styles.gifstyles} /> */}
 
           <Ripple onPress={() => setTimeout(() => {
             this.runTest()
@@ -173,6 +176,7 @@ export default class Home extends Component {
               backgroundColor="#1BB9C4"
               style={styles.centeredBtn}
               onPress={() => this.runTest()}
+              // onPress={this.props.navigation.navigate('History')}
             >
               {this.state.checked ? <Icon type="AntDesign" name="checkcircleo" style={{ color: this.state.checkColor, fontSize: 40 }}
               /> : <Ripple>
@@ -193,8 +197,9 @@ export default class Home extends Component {
             </Button>
             </View>
           )} */}
+        </ImageBackground>
+          
         </View>
-
       </View>
     );
   }

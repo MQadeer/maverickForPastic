@@ -26,7 +26,7 @@ const Medicines = new Schema({
         required: true
     },
     soldOnDate:{
-        type:Array
+        type:String
     },
     batchId:{
         type:String

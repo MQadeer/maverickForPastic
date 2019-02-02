@@ -1,12 +1,7 @@
 import React, { Component } from 'react'
 import { ImageBackground, Text, View, BackHandler, ScrollView } from 'react-native';
 import {
-    Content,
-    ListItem,
-    Icon, Button,
-    Left,
-    Body,
-    Card, CardItem, Right
+    Card, CardItem,
 } from "native-base";
 import { styles } from './style';
 

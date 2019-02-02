@@ -2,10 +2,11 @@
 
 export default (styles = {
   
-  screenOverlay: {     
-    flex: 1,
-    justifyContent: "center",
-    marginTop:'60%',
+  
+  screenOverlay: {
+    
+    backgroundColor: "rgba(0,0,0.9)",
+    
   },
   centeredBtn: {
     click:'pointer',
@@ -18,13 +19,13 @@ export default (styles = {
   },
   centeredStopBtn: {
     click:'pointer',
-    alignSelf: "center",
+    alignSelf: "center", 
     width: 200,
     justifyContent: "center",
     borderRadius:100,
     marginTop:-30 
   },
-  backgroundVideo: {
+  gifstyles: {
 
     position:"absolute",
     height:400,

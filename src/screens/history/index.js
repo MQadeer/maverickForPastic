@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
-import { ImageBackground, Text, View, BackHandler, ScrollView,Alert } from 'react-native';
+import { Text, View, BackHandler, ScrollView, Alert, Image } from 'react-native';
 import {
-    Button,
-    Card, CardItem, Right
+    Button, Icon,
+    Right, Left, Header, Title, Card, CardItem,
 } from "native-base";
+import { Divider } from 'react-native-elements'
+import { Row, Col, Grid } from 'react-native-easy-grid'
 import { styles } from './style';
 import AwesomeButton from 'react-native-really-awesome-button';
 
@@ -13,8 +15,8 @@ export default class index extends Component {
         this.state = {
             progress: true,
             medicine: {},
-            user:{},
-            location:{}
+            user: {},
+            location: {}
 
         };
     }
@@ -26,9 +28,9 @@ export default class index extends Component {
         });
         this.setState({
             medicine: this.props.navigation.getParam("medicine", {}),
-            user:this.props.navigation.getParam("user", {})
+            user: this.props.navigation.getParam("user", {})
         })
-        Alert.alert("Notification","Click Verify Online button only if you are buying this Medicine")
+        Alert.alert("Notification", "Click Verify Online button only if you are buying this Medicine")
 
     }
 
@@ -43,43 +45,62 @@ export default class index extends Component {
     render() {
         return (
             <View style={{ flex: 1 }}>
+                <Header style={{ backgroundColor: 'white' }}>
+                    <Left>
+                        <Button transparent onPress={() => { this.props.navigation.navigate('Homes') }}
+                            style={{ marginLeft: -50 }} >
+                            <Icon type="Ionicons" name="md-arrow-back" style={{ color: "#1BB9C4", fontSize: 40 }} />
+                        </Button>
+                    </Left>
+                    <Title style={{
+                        fontSize: 28, color: "#1BB9C4", fontFamily: 'Algerian', alignSelf: "center"
+                        // backgroundColor: "#1BB9C4"
+                    }}>Medicine Status</Title>
+                </Header>
+                <ScrollView>
                 <View>
-                    <Text style={{
-                        fontSize: 28, color: "white", padding: 10, textAlign: "center", fontFamily: 'Algerian',
-                        backgroundColor: "#1BB9C4"
-                    }}>Medicine Status</Text>
-                </View>
-                <ImageBackground source={require("../../media/back.jpeg")}
-                    style={{ height: '100%', width: '100%' }}>
-                    <View style={{ marginBottom: 20 }}>
-                        <Card style={styles.cards}>
-                            
-                            <CardItem style={{ margin: 0, padding: 0, justifyContent: "center" }}>
-                                {/* <Button
-                                        light
-                                        style={styles.cardBtn}
-                                        onPress={()=>{this.props.navigation.navigate('Verification')}}
-                                    >
-                                        <Text style={{
-                                            color: "white", fontWeight: 'bold', fontSize: 25, padding: 10
-                                        }}> Verify Online </Text>
-
-                                    </Button> */}
-                                <AwesomeButton progress backgroundColor="#1BB9C4" style={{ color: "white" }}
-                                    onPress={this.gotoOnlineVerification} >
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 25, backgroundColor: "#1BB9C4" }}>Verify Online</Text>
-                                </AwesomeButton>
-                            </CardItem>
+                    <View style={{}}>
+                        
+                        {/* <Image source={require("'../../media/",this.state.medicine.company,".jpg'")} style={{ */}
+                        <Image source={require('../../media/Qarshi.jpg')} style={{
+                            marginTop: 8
+                            , alignSelf: "center", height: 120, width: 120, borderRadius: 100, borderColor: '1BB9C4', borderWidth: 5,
+                        }} />
+                        <Text style={{
+                            fontSize: 24, color: "black", marginTop: 3,
+                            fontFamily: 'Algerian', alignSelf: "center"
+                        }}>{this.state.medicine.name}</Text>
+                        <Text style={{
+                            fontSize: 24, 
+                            fontFamily: 'Algerian', alignSelf: "center"
+                        }}>{"By "+this.state.medicine.company}</Text>
+                    </View>
+                    <View style={{ marginTop: 10, flexDirection: "row", justifyContent: "center" }}>
+                        <View style={{ borderRightWidth: 2, borderRightColor: "#95a5a6" }}>
+                            <Text style={{ marginRight: 20, color: "black", fontSize: 18, }}>Scanned  </Text>
+                            <Text style={{ marginRight: 20, alignSelf: "center", fontSize: 15, }}>{this.state.medicine.scannedtimes+" Times"} </Text>
+                        </View>
+                        <View >
+                            <Text style={{ marginLeft: 25, color: "black", fontSize: 18, }}>Packing </Text>
+                            <Text style={{ marginLeft: 25, fontSize: 15, alignSelf: "center" }}>{this.state.medicine.packing} </Text>
+                        </View>
+                    </View>
+                    <View style={{ marginTop: 18, justifyContent: "center" }}>
+                        <AwesomeButton progress backgroundColor="#1BB9C4" height={40} width={160} borderRadius={20} style={{
+                            alignSelf: "center",
+                            color: "white"
+                        }}
+                            onPress={this.gotoOnlineVerification} >
+                            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, backgroundColor: "#1BB9C4" }}>Verify Online</Text>
+                        </AwesomeButton>
+                    </View>
+                    <Card transparent style={styles.cards}>
+                        
+                    
                             <CardItem style={styles.carditems}>
-                                <View>
-                                    <Text style={styles.headText}>Medicine Name</Text>
-                                    <Text style={styles.text}>{this.state.medicine.name}</Text>
-                                </View>
-                            </CardItem>
-                            <CardItem style={styles.carditems}>
-                                <View>
-                                    <Text style={styles.headText}>No of Times Scanned </Text>
-                                    <Text style={styles.text}>{this.state.medicine.scannedtimes }</Text>
+                                <View style={{}}>
+                                    <Text style={styles.headText}>Description </Text>
+                                    <Text style={styles.text}>{this.state.medicine.description}</Text>
                                 </View>
                             </CardItem>
                             <CardItem style={styles.carditems}>
@@ -100,15 +121,11 @@ export default class index extends Component {
                                     <Text style={styles.text}>{this.state.medicine.batchId}</Text>
                                 </View>
                             </CardItem>
-                            <CardItem style={styles.carditems}>
-                                <View>
-                                    <Text style={styles.headText}>Company Name</Text>
-                                    <Text style={styles.text}>{this.state.medicine.company}</Text>
-                                </View>
-                            </CardItem>
-                        </Card>
-                    </View>
-                </ImageBackground>
+                            
+                        
+                    </Card>
+                </View>
+                </ScrollView>
             </View>
         )
     }
@@ -118,17 +135,21 @@ export default class index extends Component {
 
         navigator.geolocation.getCurrentPosition((location) => {
             console.log("position is ", location)
-            if(location){
+            if (location) {
                 this.setState({
-                    location:{latitude:location.coords.latitude,longitude:location.coords.longitude}
+                    location: { latitude: location.coords.latitude, longitude: location.coords.longitude }
                 })
                 this.meddicineCheckRequest();
             }
         }, (err) => {
             console.log("err is ", err);
             Alert.alert("Network error", "check your internet connection and try again", [
-                { text: "Ok", onPress: () => { this.props.navigation.navigate('Homes',
-                {user:this.state.user,medicine:this.state.medicine})} }
+                {
+                    text: "Ok", onPress: () => {
+                        this.props.navigation.navigate('Homes',
+                            { user: this.state.user, medicine: this.state.medicine })
+                    }
+                }
             ]);
         },
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
@@ -145,17 +166,21 @@ export default class index extends Component {
                     "Accept": 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ medicineInfo: {info:this.state.medicine,buyingDate:currentDate,
-                    location:this.state.location}, user: this.state.user}),
+                body: JSON.stringify({
+                    medicineInfo: {
+                        info: this.state.medicine, buyingDate: currentDate,
+                        location: this.state.location
+                    }, user: this.state.user
+                }),
             }
         )
             .then(res => {
-                console.log("res parsed  ",JSON.parse(res._bodyText));
-                this.props.navigation.navigate('Verification',{ verifiedMedicine:JSON.parse(res._bodyText)})
+                console.log("res parsed  ", JSON.parse(res._bodyText));
+                this.props.navigation.navigate('Verification', { verifiedMedicine: JSON.parse(res._bodyText) })
             }).catch(err => {
-               Alert.alert("Network error","Check Your internet connection or login again ",[
-                   {text:"ok",onPress:()=>{this.props.navigation.navigate('Homes')}}
-               ])
+                Alert.alert("Network error", "Check Your internet connection or login again ", [
+                    { text: "ok", onPress: () => { this.props.navigation.navigate('Homes') } }
+                ])
             })
     }
 }
