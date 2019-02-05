@@ -6,6 +6,7 @@ export default (styles = {
   screenOverlay: {
     
     backgroundColor: "rgba(0,0,0.9)",
+    alignItems: 'center'
     
   },
   centeredBtn: {
@@ -15,15 +16,15 @@ export default (styles = {
     height:62,
     justifyContent: "center",
     borderRadius:10,    
-    marginTop:300
+    marginTop:350
   },
   centeredStopBtn: {
     click:'pointer',
     alignSelf: "center", 
-    width: 200,
+    width: 100,
     justifyContent: "center",
     borderRadius:100,
-    marginTop:-30 
+    marginTop:20 
   },
   gifstyles: {
 

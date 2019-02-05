@@ -11,8 +11,9 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "geocoder": "^0.2.3",
+    "local-reverse-geocoder": "^0.5.1",
     "mongodb": "^3.1.10",
-    "mongoose": "^5.4.0",
-    "reverse-geocoding": "^3.0.1"
+    "mongoose": "^5.4.0"
   }
 }

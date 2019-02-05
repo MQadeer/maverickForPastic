@@ -4,11 +4,7 @@ import { StyleSheet, Dimensions } from "react-native";
 export const styles = StyleSheet.create({
     
     text:{
-        
-       
         fontSize:15,
-        
-        
     },
     headText:{
         fontSize:20,
@@ -26,13 +22,7 @@ export const styles = StyleSheet.create({
         marginLeft:14,
         margin:0,
         borderBottomWidth:1,
-        borderBottomColor:"#ffa502"
+        borderBottomColor:"#21DDE9"
     },
-    cardBtn:{
-        justifyContent:'center',
-        borderRadius:7,
-        width:200,
-        backgroundColor:"#21DDE9",
-        
-    }
+    
 });

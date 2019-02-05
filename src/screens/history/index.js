@@ -4,8 +4,6 @@ import {
     Button, Icon,
     Right, Left, Header, Title, Card, CardItem,
 } from "native-base";
-import { Divider } from 'react-native-elements'
-import { Row, Col, Grid } from 'react-native-easy-grid'
 import { styles } from './style';
 import AwesomeButton from 'react-native-really-awesome-button';
 
@@ -152,14 +150,14 @@ export default class index extends Component {
                 }
             ]);
         },
-            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+            { enableHighAccuracy: true, timeout: 14000, maximumAge: 1000 }
         )
     }
 
     meddicineCheckRequest = () => {
         let DateObject = new Date;
         let currentDate = DateObject.toLocaleDateString();
-        fetch('http://192.168.1.16:8888/checkMedicine',
+        fetch('http://10.123.12.146:8888/checkMedicine',
             {
                 method: "POST",
                 headers: {

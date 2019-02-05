@@ -18,7 +18,8 @@ import {
 
 } from "native-base";
 import Ripple from 'react-native-material-ripple';
-import Video from 'react-native-video';
+import * as Animatable from "react-native-animatable";
+import AwesomeButton from 'react-native-really-awesome-button';
 
 
 function strToBytes(str) {
@@ -56,6 +57,7 @@ export default class Home extends Component {
       checkColor: "white",
       tagVerified: false,
       user: {},
+      progressAnimation: true
     };
   }
   componentDidMount() {
@@ -69,23 +71,12 @@ export default class Home extends Component {
     this.setState({
       user: this.props.screenProps.user
     })
-
-    BackHandler.addEventListener('hardwareBackPress', () => {
-      ToastAndroid.showWithGravityAndOffset(
-        'A wild toast appeared!',
-        ToastAndroid.LONG,
-        ToastAndroid.TOP,
-        25,
-        50,
-      );
-      ToastAndroid.show('click again to exit app ', ToastAndroid.LONG)
-      this.props.navigation.closeDrawer();
-      return true;
-    })
   }
-  
+
   componentWillUnmount() {
     this.backHandler.remove();
+
+
   }
 
   closeDrawer = () => {
@@ -94,39 +85,44 @@ export default class Home extends Component {
   openDrawer = () => {
     this.props.navigation.toggleDrawer();
   };
-  
+
   showCheck = () => {
-    
+
     if (true) {
+      // this.setState({
+      //   checked: true
+      // })
+      // setTimeout(() => {
+      //   this.setState({
+      //     checkColor: this.state.checkColors[0]
+      //   })
+      // }, 800);
+      // setTimeout(() => {
+      //   this.setState({
+      //     checkColor: this.state.checkColors[1]
+      //   })
+      // }, 500);
+      // setTimeout(() => {
+      //   this.setState({
+      //     checkColor: this.state.checkColors[2]
+      //   })
+      // }, 800);
+      // setTimeout(() => {
+      //   this.setState({
+      //     checkColor: this.state.checkColors[2]
+      //   })
+      // }, 1000);
+      // setTimeout(() => {
+      //   this.props.navigation.navigate('History', { medicine: this.state.parsedText, user: this.state.user });
+      //   this.setState({
+      //     checked: false
+      //   })
+      // }, 1000)
       this.setState({
-        checked: true
+        progressAnimation: true
       })
-      setTimeout(() => {
-        this.setState({
-          checkColor: this.state.checkColors[0]
-        })
-      }, 800);
-      setTimeout(() => {
-        this.setState({
-          checkColor: this.state.checkColors[1]
-        })
-      }, 500);
-      setTimeout(() => {
-        this.setState({
-          checkColor: this.state.checkColors[2]
-        })
-      }, 800);
-      setTimeout(() => {
-        this.setState({
-          checkColor: this.state.checkColors[2]
-        })
-      }, 1000);
-      setTimeout(() => {
-        this.props.navigation.navigate('History', { medicine: this.state.parsedText, user: this.state.user });
-        this.setState({
-          checked: false
-        })
-      }, 1000)
+      this.props.navigation.navigate('History', { medicine: this.state.parsedText, user: this.state.user });
+
     }
     else {
       Alert.alert(
@@ -150,8 +146,8 @@ export default class Home extends Component {
 
             <Left>
 
-              <Button transparent onPress={this.openDrawer} 
-              style={{}} >
+              <Button transparent onPress={this.openDrawer}
+                style={{}} >
                 <Icon type="SimpleLineIcons"
                   name="menu" onPress={this.openDrawer} />
               </Button>
@@ -161,28 +157,32 @@ export default class Home extends Component {
             </Body>
           </Header>
         </View>
-        
+
 
         <View style={styles.screenOverlay}>
-        <ImageBackground source={require('../../media/back.jpeg')} style={{ height: '100%', width: '100%',opacity:0.3 }}>
-          {/* <Image source={require("../../media/tutorial.gif")}   // Can be a URL or a local file.
-            style={styles.gifstyles} /> */}
+          {isTestRunning && (<View>
+            <Animatable.Image animation="fadeInDown" source={require("../../media/tutorial.gif")}
+              style={styles.gifstyles} />
+            <Animatable.Text animation="fadeInDown" style={{ fontSize: 17, marginTop: 5 }}>Tap your Phone on Medicine Bottle's Cap</Animatable.Text></View>
+          )}
+          {/* <Button
+            light
+            backgroundColor="#1BB9C4"
+            style={styles.centeredBtn}
+            onPress={() => this.runTest()}
+          // onPress={this.props.navigation.navigate('Verification')}
+          >
+            {this.state.checked ? <Icon type="AntDesign" name="checkcircleo" style={{ color: this.state.checkColor, fontSize: 40 }}
+            /> : <Ripple>
+                <Text style={{ color: "white", fontWeight: 'bold', fontSize: 25, }}> IDENTIFY </Text></Ripple>}
+          </Button> */}
 
-          <Ripple onPress={() => setTimeout(() => {
-            this.runTest()
-          }, 200)}>
-            <Button
-              light
-              backgroundColor="#1BB9C4"
+          {!isTestRunning && (
+            <AwesomeButton progress={false} width={150} borderRadius={5} backgroundColor="#1BB9C4"
               style={styles.centeredBtn}
-              onPress={() => this.runTest()}
-              // onPress={this.props.navigation.navigate('History')}
-            >
-              {this.state.checked ? <Icon type="AntDesign" name="checkcircleo" style={{ color: this.state.checkColor, fontSize: 40 }}
-              /> : <Ripple>
-                  <Text style={{ color: "white", fontWeight: 'bold', fontSize: 25, }}> IDENTIFY </Text></Ripple>}
-            </Button></Ripple>
-          
+              onPress={() => this.runTest()}><Text style={{ color: "white", fontWeight: 'bold', fontSize: 25, }}>Identify</Text></AwesomeButton>
+
+          )}
 
           {/* {isTestRunning && (
             <View>
@@ -197,13 +197,12 @@ export default class Home extends Component {
             </Button>
             </View>
           )} */}
-        </ImageBackground>
-          
         </View>
       </View>
     );
   }
   runTest = () => {
+
     const cleanUp = () => {
       this.setState({ isTestRunning: false });
       NfcManager.closeTechnology()
@@ -217,10 +216,12 @@ export default class Home extends Component {
     }
     const textToWrite = (text) => {
       this.state.parsedText.scannedtimes += 1;
-
       return JSON.stringify(text)
     }
-    this.setState({ isTestRunning: true });
+    this.setState({
+      isTestRunning: true,
+      progressAnimation: false
+    });
     NfcManager.registerTagEvent(tag => console.log(tag))
       .then(() => NfcManager.requestTechnology(NfcTech.Ndef))
       .then(() => NfcManager.getTag())
@@ -252,6 +253,6 @@ export default class Home extends Component {
       .then(() => NfcManager.isEnabled())
       .then(enabled => this.setState({ enabled }))
   }
-  
+
 }
 

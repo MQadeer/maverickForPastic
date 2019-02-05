@@ -1,23 +1,27 @@
 import React, { Component } from 'react'
-import { ImageBackground, Text, View, BackHandler, ScrollView } from 'react-native';
+import { Text, View, BackHandler, ScrollView, Alert, Image } from 'react-native';
 import {
-    Card, CardItem,
+    Button, Icon,
+    Right, Left, Header, Title, Card, CardItem,
 } from "native-base";
 import { styles } from './style';
 
 export default class index extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            modalVisible: false,
+        this.state={
+           medicine:{}
+        }
 
-        };
     }
     componentDidMount() {
         this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
             this.props.navigation.navigate('Homes')
             return true;
         });
+        this.setState({
+            medicine:this.props.navigation.getParam("verifiedMedicine",{}),
+        })
     }
 
     componentWillUnmount() {
@@ -27,78 +31,64 @@ export default class index extends Component {
     render() {
         return (
             <View style={{ flex: 1 }}>
-            {alert(JSON.stringify(this.props.navigation.getParam('verifiedMedicine',{})))}
-                <View>
-                    <Text style={{
-                        fontSize: 28, color: "white", padding: 10, textAlign: "center", fontFamily: 'Algerian',
-                        backgroundColor: "#1BB9C4"
-                    }}>Online Status</Text>
-                </View>
-                <ImageBackground source={require("../../media/back.jpeg")}
-                    style={{ height: '100%', width: '100%' }}>
-                    <View style={{ marginBottom:50}}>
-                        <Card style={styles.cards}>
-                            <ScrollView>
-                                <CardItem style={styles.carditems}>
-                                    <View>
-                                        <Text style={styles.headText}>Status</Text>
-                                        <Text style={styles.text}>Used</Text>
-                                    </View>
-                                </CardItem>
-                                <CardItem style={styles.carditems}>
-                                    <View>
-                                        <Text style={styles.headText}>Medicine Name</Text>
-                                        <Text style={styles.text}>Acefyl Cough Syrup</Text>
-                                    </View>
-                                </CardItem>
-                                <CardItem style={styles.carditems}>
-                                    <View>
-                                        <Text style={styles.headText}>Manufacturing Date</Text>
-                                        <Text style={styles.text}>10-Jan-2018</Text>
-                                    </View>
-                                </CardItem>
-                                <CardItem style={styles.carditems}>
-                                    <View>
-                                        <Text style={styles.headText}>Expiry</Text>
-                                        <Text style={styles.text}>10-jan-2020</Text>
-                                    </View>
-                                </CardItem>
-                                <CardItem style={styles.carditems}>
-                                    <View>
-                                        <Text style={styles.headText}>Batch ID</Text>
-                                        <Text style={styles.text}>10634</Text>
-                                    </View>
-                                </CardItem>
-                                <CardItem style={styles.carditems}>
-                                    <View>
-                                        <Text style={styles.headText}>Company Name</Text>
-                                        <Text style={styles.text}>Nabiqasim Industeries</Text>
-                                    </View>
-                                </CardItem>
-                                <CardItem style={styles.carditems}>
-                                    <View>
-                                        <Text style={styles.headText}>Company ID</Text>
-                                        <Text style={styles.text}>1474</Text>
-                                    </View>
-                                </CardItem>
-                                <CardItem style={styles.carditems}>
-                                    <View>
-                                        <Text style={styles.headText}>No Of Times Scanned</Text>
-                                        <Text style={styles.text}>4</Text>
-                                    </View>
-                                </CardItem>
-                                
+                <Header style={{ backgroundColor: 'white' }}>
+                    <Left>
+                        <Button transparent onPress={() => { this.props.navigation.navigate('Homes') }}
+                            style={{ marginLeft: -50 }} >
+                            <Icon type="Ionicons" name="md-arrow-back" style={{ color: "#1BB9C4", fontSize: 40 }} />
+                        </Button>
+                    </Left>
+                    <Title style={{
+                        fontSize: 28, color: "#1BB9C4", fontFamily: 'Algerian', alignSelf: "center"
+                        // backgroundColor: "#1BB9C4"
+                    }}>Online Status</Title>
+                </Header>
+                <ScrollView>
+                    <View>
+                        <Card transparent style={styles.cards}>
+                        <CardItem style={styles.carditems}>
+                                <View style={{}}>
+                                    <Text style={styles.headText}>Status </Text>
+                                    <Text style={styles.text}>{this.state.medicine.status}</Text>
+                                </View>
+                            </CardItem>
+                            <CardItem style={styles.carditems}>
+                                <View style={{}}>
+                                    <Text style={styles.headText}>Sold On  </Text>
+                                    <Text style={styles.text}>{this.state.medicine.soldOnDate}</Text>
+                                </View>
+                            </CardItem>
+                            <CardItem style={styles.carditems}>
+                                <View style={{}}>
+                                    <Text style={styles.headText}>Description </Text>
+                                    <Text style={styles.text}>{this.state.medicine.description}</Text>
+                                </View>
+                            </CardItem>
+                            <CardItem style={styles.carditems}>
+                                <View>
+                                    <Text style={styles.headText}>Manufacturing Date</Text>
+                                    <Text style={styles.text}>{this.state.medicine.MFG}</Text>
+                                </View>
+                            </CardItem>
+                            <CardItem style={styles.carditems}>
+                                <View>
+                                    <Text style={styles.headText}>Expiry</Text>
+                                    <Text style={styles.text}>{this.state.medicine.expiry}</Text>
+                                </View>
+                            </CardItem>
+                            <CardItem style={styles.carditems}>
+                                <View>
+                                    <Text style={styles.headText}>Batch ID</Text>
+                                    <Text style={styles.text}>{this.state.medicine.batchId}</Text>
+                                </View>
+                            </CardItem>
 
-                            </ScrollView>
+
                         </Card>
                     </View>
-                </ImageBackground>
+                </ScrollView>
 
             </View>
-
-
-
-
         )
     }
 }
