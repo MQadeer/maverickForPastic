@@ -6,6 +6,7 @@ import {
 } from "native-base";
 import { styles } from './style';
 import AwesomeButton from 'react-native-really-awesome-button';
+import {ip} from '../../config';
 
 export default class index extends Component {
     constructor(props) {
@@ -39,6 +40,7 @@ export default class index extends Component {
 
     gotoOnlineVerification = () => {
         this.getLocation();
+
     }
     render() {
         return (
@@ -57,10 +59,9 @@ export default class index extends Component {
                 </Header>
                 <ScrollView>
                 <View>
-                    <View style={{}}>
-                        
-                        {/* <Image source={require("'../../media/",this.state.medicine.company,".jpg'")} style={{ */}
-                        <Image source={require('../../media/Qarshi.jpg')} style={{
+                    <View style={{}}>                        
+                        {/* <Image source={require(`../../media/${this.state.medicine.company}.jpg`)} style={{ */}
+                        <Image source={require('../../media/bayer.jpg')} style={{
                             marginTop: 8
                             , alignSelf: "center", height: 120, width: 120, borderRadius: 100, borderColor: '1BB9C4', borderWidth: 5,
                         }} />
@@ -137,7 +138,7 @@ export default class index extends Component {
                 this.setState({
                     location: { latitude: location.coords.latitude, longitude: location.coords.longitude }
                 })
-                this.meddicineCheckRequest();
+                //this.meddicineCheckRequest();
             }
         }, (err) => {
             console.log("err is ", err);
@@ -157,7 +158,7 @@ export default class index extends Component {
     meddicineCheckRequest = () => {
         let DateObject = new Date;
         let currentDate = DateObject.toLocaleDateString();
-        fetch('http://10.123.12.146:8888/checkMedicine',
+        fetch(`http://${ip.systemip}/checkMedicine`,
             {
                 method: "POST",
                 headers: {

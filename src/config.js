@@ -1,3 +1,5 @@
-module.exports={
-    endpoint:"192.168.137.1:8888"
+const ip={
+    systemip:"192.168.1.9:8888"
 }
+
+module.exports={ip};

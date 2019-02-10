@@ -15,7 +15,7 @@ const Medicines = new Schema({
     manufacturerName: {
         type: String,
     },
-    expireDate: {
+    expiry: {
         type: String,
 
     },
@@ -29,7 +29,7 @@ const Medicines = new Schema({
     batchId:{
         type:String
     },
-    companyId:{
+    decription:{
         type:String
     }
 

@@ -3,18 +3,14 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const server = express();
 const pharmaController = require('./controllers/pharmaController');
-const Users = require('./models/Users');
-const Medicine = require('./models/Medicine');
+const dbinfo = require('./config/config').db;
 
 let database;
 
 const pharmaRouter = require('./api/routes/pharma_O2');
-// const db = require('mongodb://mqadeer123:mqadeer123@ds042128.mlab.com:42128/medicareapp');
-mongoose.connect('mongodb://mqadeer123:mqadeer123@ds042128.mlab.com:42128/medicareapp')
+mongoose.connect(`mongodb://${dbinfo.name}:${dbinfo.password}@ds042128.mlab.com:42128/medicareapp`)
     .then(() => {
-
         console.log('mongodb is connected')
-
     })
     .catch(err => {
         console.log(err)
@@ -63,9 +59,13 @@ server.post("/getMeds", function (req, res) {
     })
 })
 
+
+
 module.exports = { database };
 server.use("/authentication", pharmaRouter);
+// const port = process.env.PORT || 8888;
 const port = 8888;
+
 server.listen(port, () => `server is listening at port ${port}`)
 
 

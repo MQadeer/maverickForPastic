@@ -41,7 +41,7 @@ export default class index extends Component {
                     <Title style={{
                         fontSize: 28, color: "#1BB9C4", fontFamily: 'Algerian', alignSelf: "center"
                         // backgroundColor: "#1BB9C4"
-                    }}>Online Status</Title>
+                    }}>Medicine Status</Title>
                 </Header>
                 <ScrollView>
                     <View>
@@ -55,7 +55,7 @@ export default class index extends Component {
                             <CardItem style={styles.carditems}>
                                 <View style={{}}>
                                     <Text style={styles.headText}>Sold On  </Text>
-                                    <Text style={styles.text}>{this.state.medicine.soldOnDate}</Text>
+                                    <Text style={styles.text}>{this.state.medicine.description}</Text>
                                 </View>
                             </CardItem>
                             <CardItem style={styles.carditems}>

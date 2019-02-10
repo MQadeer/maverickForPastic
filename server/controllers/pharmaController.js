@@ -68,7 +68,7 @@ module.exports = {
             { $push: { medicineBought: { $each: [data.medicineInfo] } } }, { upsert: true }, function (err, info) {
                 console.log(info);
                 Medicinesdb.findOneAndUpdate({ serialNo: medInfo.tagId },
-                    { status: "sold", soldOnDate: data.buyingDate }, { upsert: true }, function (err, res) {
+                    { status: "sold", soldOnDate: data.medicineInfo.buyingDate }, { upsert: true }, function (err, res) {
                         console.log("data updated");
                         cb(err, res)
                         Users.find()
