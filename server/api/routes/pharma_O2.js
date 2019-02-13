@@ -9,7 +9,6 @@ pharmaRouter.get('/getDetail/:serialNo', (req, res) => {
 
 })
 
-
 pharmaRouter.post('/checkSyrup',(req,res)=>{
     pharmacontroller.checkSyrup(req.body,(err,data)=>{
         console.log(data)

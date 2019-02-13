@@ -6,9 +6,9 @@ import {
 } from "native-base";
 import { styles } from './style';
 import AwesomeButton from 'react-native-really-awesome-button';
-import {ip} from '../../config';
+import {config} from '../../config';
 
-export default class index extends Component {
+export default class Offline extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -138,7 +138,7 @@ export default class index extends Component {
                 this.setState({
                     location: { latitude: location.coords.latitude, longitude: location.coords.longitude }
                 })
-                //this.meddicineCheckRequest();
+                this.meddicineCheckRequest();
             }
         }, (err) => {
             console.log("err is ", err);
@@ -151,14 +151,14 @@ export default class index extends Component {
                 }
             ]);
         },
-            { enableHighAccuracy: true, timeout: 14000, maximumAge: 1000 }
+            { enableHighAccuracy: true, timeout: 15000, maximumAge: 1000 }
         )
     }
 
     meddicineCheckRequest = () => {
         let DateObject = new Date;
         let currentDate = DateObject.toLocaleDateString();
-        fetch(`http://${ip.systemip}/checkMedicine`,
+        fetch(`http://${config.systemip}/checkMedicine`,
             {
                 method: "POST",
                 headers: {

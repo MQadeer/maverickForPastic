@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { ImageBackground, BackHandler, Image, Alert, ToastAndroid } from "react-native";
 import NfcManager, { NdefParser, NfcTech } from 'react-native-nfc-manager';
-import { AES, enc } from 'react-native-crypto-js';
 import styles from "./style";
 import {
   Text,
@@ -21,7 +20,7 @@ import {
 import Ripple from 'react-native-material-ripple';
 import * as Animatable from "react-native-animatable";
 import AwesomeButton from 'react-native-really-awesome-button';
-import {config} from '../../config';
+import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 
 function strToBytes(str) {
   let result = [];
@@ -36,7 +35,12 @@ function buildTextPayload(valueToWrite) {
   const headerBytes = [0xD1, 0x01, (textBytes.length + 3), 0x54, 0x02, 0x65, 0x6e];
   return [...headerBytes, ...textBytes];
 }
-
+const FirstRoute = () => (
+  <View style={[styles.scene, { backgroundColor: '#ff4081' }]} />
+);
+const SecondRoute = () => (
+  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+);
 export default class Home extends Component {
 
   static navigationOptions = {
@@ -58,7 +62,12 @@ export default class Home extends Component {
       checkColor: "white",
       tagVerified: false,
       user: {},
-      progressAnimation: true
+      progressAnimation: true,
+      index: 0,
+      routes: [
+        { key: 'first', title: 'First' },
+        { key: 'second', title: 'Second' },
+      ],
     };
   }
   componentDidMount() {
@@ -90,19 +99,10 @@ export default class Home extends Component {
   showCheck = () => {
 
     if (true) {
-      // this.setState({
-      //   checked: true
-      // })
-      // setTimeout(() => {
-      //   this.props.navigation.navigate('Offline', { medicine: this.state.parsedText, user: this.state.user });
-      //   this.setState({
-      //     checked: false
-      //   })
-      // }, 1000)
       this.setState({
         progressAnimation: true
       })
-      this.props.navigation.navigate('Offline', { medicine: this.state.parsedText, user: this.state.user });
+      this.props.navigation.navigate('History', { medicine: this.state.parsedText, user: this.state.user });
 
     }
     else {
@@ -115,9 +115,7 @@ export default class Home extends Component {
 
   }
 
-  gotoNews = () => {
-    this.props.navigation.navigate("News");
-  }
+  
   render() {
     let { enabled, tag, parsedText, isTestRunning } = this.state;
     return (
@@ -132,7 +130,9 @@ export default class Home extends Component {
             <Left>
 
               <Button transparent onPress={this.openDrawer}
-                style={{}} >
+                style={{
+
+                }} >
                 <Icon type="SimpleLineIcons"
                   name="menu" onPress={this.openDrawer} />
               </Button>
@@ -140,23 +140,15 @@ export default class Home extends Component {
             <Body style={{ alignItems: 'center', marginRight: 70 }}>
               <Title style={{ fontSize: 20 }}>Home</Title>
             </Body>
-            <Right>
-
-              <Button transparent onPress={this.gotoNews}
-                style={{}} >
-                <Icon type="FontAwesome" style={{ fontSize: 25 }}
-                  name="newspaper-o" onPress={this.gotoNews} />
-              </Button>
-            </Right>
           </Header>
         </View>
 
 
         <View style={styles.screenOverlay}>
-          {isTestRunning && (<View style={{ marginTop: 7 }}>
+          {isTestRunning && (<View>
             <Animatable.Image animation="fadeInDown" source={require("../../media/tutorial.gif")}
               style={styles.gifstyles} />
-            <Animatable.Text animation="fadeInDown" style={{ fontSize: 17, marginTop: 10 }}>Tap your Phone on Medicine Bottle's Cap</Animatable.Text></View>
+            <Animatable.Text animation="fadeInDown" style={{ fontSize: 17, marginTop: 5 }}>Tap your Phone on Medicine Bottle's Cap</Animatable.Text></View>
           )}
           {/* <Button
             light
@@ -191,6 +183,7 @@ export default class Home extends Component {
             </View>
           )} */}
         </View>
+        
       </View>
     );
   }
@@ -202,9 +195,7 @@ export default class Home extends Component {
       NfcManager.unregisterTagEvent();
     }
     const parseText = (tag) => {
-
       if (tag.ndefMessage) {
-
         return NdefParser.parseText(tag.ndefMessage[0]);
       }
       return null;
@@ -226,27 +217,13 @@ export default class Home extends Component {
       .then(tag => {
         console.log("tag set ", tag)
         let parsedText = parseText(tag);
-        // parsedText = JSON.parse(parsedText);
-        let bytes = AES.decrypt(parsedText, config.enctyptionKey);
-        let decryptedData = JSON.parse(bytes.toString(enc.Utf8));
-        console.log("decryptedData  ", decryptedData);
-        decryptedData[8]+=1;
-        let parsedTextObj = {
-          name: decryptedData[0], company: decryptedData[1], MFG: decryptedData[2], expiry: decryptedData[3],
-          batchId: decryptedData[4], packing: decryptedData[5], description: decryptedData[6], tagId: decryptedData[7], scannedtimes: decryptedData[8]
-        }
-        console.log("parsed obj  ", parsedTextObj);
-        this.setState({
-          tag,
-          parsedText: parsedTextObj
-        });
+        parsedText = JSON.parse(parsedText);
+        parsedText.scannedtimes += 1;
+        this.setState({ tag, parsedText });
         console.log("state tag ", this.state.tag);
         console.log("state text ", this.state.parsedText);
-        return decryptedData
-      }).then((text) => {
-        let encrytedData = AES.encrypt(JSON.stringify(text), config.enctyptionKey);
-        NfcManager.writeNdefMessage(buildTextPayload(encrytedData.toString()))
-      })
+        return parsedText
+      }).then((text) => { NfcManager.writeNdefMessage(buildTextPayload(JSON.stringify(text))) })
       .then(cleanUp)
       .then(() => {
         this.showCheck();

@@ -7,8 +7,9 @@ import {
 } from "react-navigation";
 
 import HomeScreen from "../screens/Home";
-import History from "../screens/history";
-import VerificationScreen from "../screens/verification"
+import Offline from "../screens/offlineVerifictation/index";
+import VerificationScreen from "../screens/verification";
+import News from "../screens/news/index";
 
 
 import DrawerScreen from "../screens/Sidebar";
@@ -16,8 +17,9 @@ import DrawerScreen from "../screens/Sidebar";
 const HomeStack = createStackNavigator(
   {
     Homes: HomeScreen,
-    History:History,
-    Verification:VerificationScreen
+    Offline:Offline,
+    Verification:VerificationScreen,
+    News:News,
   },
   {
     headerMode: "none"

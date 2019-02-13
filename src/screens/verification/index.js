@@ -49,15 +49,15 @@ export default class index extends Component {
                         <CardItem style={styles.carditems}>
                                 <View style={{}}>
                                     <Text style={styles.headText}>Status </Text>
-                                    <Text style={styles.text}>{this.state.medicine.status}</Text>
+                                    <Text style={{fontSize:18,color:"red"}}>{this.state.medicine.status}</Text>
                                 </View>
                             </CardItem>
-                            <CardItem style={styles.carditems}>
+                            {/* <CardItem style={styles.carditems}>
                                 <View style={{}}>
                                     <Text style={styles.headText}>Sold On  </Text>
-                                    <Text style={styles.text}>{this.state.medicine.description}</Text>
+                                    <Text style={styles.text}>{this.state.medicine.soldOnDate}</Text>
                                 </View>
-                            </CardItem>
+                            </CardItem> */}
                             <CardItem style={styles.carditems}>
                                 <View style={{}}>
                                     <Text style={styles.headText}>Description </Text>
@@ -67,7 +67,7 @@ export default class index extends Component {
                             <CardItem style={styles.carditems}>
                                 <View>
                                     <Text style={styles.headText}>Manufacturing Date</Text>
-                                    <Text style={styles.text}>{this.state.medicine.MFG}</Text>
+                                    <Text style={styles.text}>{this.state.medicine.manufacturingDate}</Text>
                                 </View>
                             </CardItem>
                             <CardItem style={styles.carditems}>

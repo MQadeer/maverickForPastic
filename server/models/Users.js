@@ -1,8 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const mongoClient=require('mongodb').MongoClient;
-
-
 
 const Users = new Schema({
     

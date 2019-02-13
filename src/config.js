@@ -1,5 +1,6 @@
-const ip={
-    systemip:"192.168.1.9:8888"
+const config={
+    systemip:"10.123.80.44:8888",
+    enctyptionKey:'123',
 }
 
-module.exports={ip};
+module.exports={config};

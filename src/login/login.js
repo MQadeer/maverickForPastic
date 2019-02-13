@@ -4,7 +4,7 @@ import {
     View, NetInfo, BackHandler,
     Alert
 } from 'react-native';
-import {ip} from '../config';
+import { config } from '../config';
 import Navigation from '../navigation-setup/Setup';
 import { AzureInstance, AzureLoginView } from 'react-native-azure-ad-2';
 
@@ -65,9 +65,13 @@ export default class Login extends React.Component {
     };
 
     addUsertoDB() {
+        
+
         let medicineBought = [];
         console.log(this.state.user);
-        fetch(`http://${ip.systemip}/addUser`, {
+        // fetch(`http://${config.systemip}/addUser`, {
+        fetch('https://maverickapp.azurewebsites.net/addUser', {
+
             method: "POST",
             headers: {
                 "Accept": 'application/json',
@@ -88,7 +92,7 @@ export default class Login extends React.Component {
         console.disableYellowBox = true;
         return (
             <View style={{ flex: 1 }}>
-                {this.state.logedin ? <Navigation screenProps={{ user: this.state.user, medicineBought:this.state.medicineBought }} /> : <AzureLoginView
+                {this.state.logedin ? <Navigation screenProps={{ user: this.state.user, medicineBought: this.state.medicineBought }} /> : <AzureLoginView
                     azureInstance={this.azureInstance}
                     loadingMessage={<Image style={{ height: 250, width: 250, marginTop: -70 }} source={require('../media/200.gif')} />}
                     onSuccess={this._onLoginSuccess}

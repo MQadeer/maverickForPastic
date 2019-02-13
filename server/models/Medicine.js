@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+
+
 const Medicines = new Schema({
     serialNo: {
         type: String,
@@ -15,8 +17,8 @@ const Medicines = new Schema({
     manufacturerName: {
         type: String,
     },
-    expiry: {
-        type: String,
+    expireDate: {
+        type: Date,
 
     },
     status: {
@@ -29,7 +31,7 @@ const Medicines = new Schema({
     batchId:{
         type:String
     },
-    decription:{
+    companyId:{
         type:String
     }
 
