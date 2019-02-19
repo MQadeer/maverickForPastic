@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     },
     barLinkContainer:{
         
-        marginVertical:5,
+        marginVertical:10,
         
         // borderBottomWidth:1,
     }

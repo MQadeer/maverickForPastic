@@ -7,6 +7,7 @@ import {
 import { styles } from './style';
 import AwesomeButton from 'react-native-really-awesome-button';
 import {config} from '../../config';
+import store from '../../redux/store';
 
 export default class Offline extends Component {
     constructor(props) {
@@ -156,9 +157,11 @@ export default class Offline extends Component {
     }
 
     meddicineCheckRequest = () => {
+
         let DateObject = new Date;
         let currentDate = DateObject.toLocaleDateString();
         fetch(`http://${config.systemip}/checkMedicine`,
+        // fetch(`https://maverickbackend.azurewebsites.net/checkMedicine`,
             {
                 method: "POST",
                 headers: {

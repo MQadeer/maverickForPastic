@@ -115,9 +115,6 @@ export default class Home extends Component {
 
   }
 
-  gotoNews = () => {
-    this.props.navigation.navigate("News");
-  }
   render() {
     let { enabled, tag, parsedText, isTestRunning } = this.state;
     return (
@@ -140,14 +137,6 @@ export default class Home extends Component {
             <Body style={{ alignItems: 'center', marginRight: 70 }}>
               <Title style={{ fontSize: 20 }}>Home</Title>
             </Body>
-            <Right>
-
-              <Button transparent onPress={this.gotoNews}
-                style={{}} >
-                <Icon type="FontAwesome" style={{ fontSize: 25 }}
-                  name="newspaper-o" onPress={this.gotoNews} />
-              </Button>
-            </Right>
           </Header>
         </View>
 

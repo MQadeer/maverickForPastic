@@ -4,7 +4,7 @@ const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const geocoding =new require('reverse-geocoding');
 const reverse = require('reverse-geocode');
-const geocodor=require('geocoder');
+const geocoder=require('geocoder');
 
 const server = express();
 
@@ -52,14 +52,14 @@ server.post("/checkMedicine", function (req, res) {
 })
 
 server.post("/addUser", function (req, res) {
-    
-
 
     MongoClient.connect(cosmosdb_string, { useNewUrlParser: true })
         .then(client => {
             console.log("Connected successfully to server");
-            geocodor.reverseGeocode(33.7489, -84.3789,function(err,data){
-                console.log("data",data)});
+            // geocoder.reverseGeocode('40.00403611111111','116.48485555555555',function(err,res){
+            //     console.log("location response   ",res)
+            // })
+            
             // console.log(reverse.lookup(50.447444, -104.418513));
             // var config = {
             //     'latitude': 40.00403611111111,
@@ -73,7 +73,7 @@ server.post("/addUser", function (req, res) {
             //     }
             // });
 
-            const db = client.db('pharma');
+            const db = client.db('maverickdb');
             // assert.equal(null, err);
 
             pharmaController.addUser(req.body, db, function (err, data) {
@@ -98,10 +98,12 @@ server.post("/getMeds", function (req, res) {
     })
 })
 
-
+server.use('/',function(){
+    console.log("index file")
+})
 
 server.use("/authentication", pharmaRouter);
-const port = 8888;
+const port =process.env.PORT || 3000;
 
 server.listen(port, () => console.log(`server is listening at port ${port}`))
 

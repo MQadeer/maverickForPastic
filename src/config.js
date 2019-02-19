@@ -1,5 +1,5 @@
 const config={
-    systemip:"10.123.80.44:8888",
+    systemip:"192.168.42.214:3000",
     enctyptionKey:'123',
 }
 

@@ -10,6 +10,7 @@ import HomeScreen from "../screens/Home";
 import Offline from "../screens/offlineVerifictation/index";
 import VerificationScreen from "../screens/verification";
 import News from "../screens/news/index";
+import Report from "../screens/report/index"
 
 
 import DrawerScreen from "../screens/Sidebar";
@@ -20,6 +21,7 @@ const HomeStack = createStackNavigator(
     Offline:Offline,
     Verification:VerificationScreen,
     News:News,
+    Report:Report
   },
   {
     headerMode: "none"

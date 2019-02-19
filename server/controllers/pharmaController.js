@@ -114,13 +114,18 @@ module.exports = {
 
             }, function(err, result) {
                 console.log("Inserted 1 document into the collection");
-                cb(err,result);
+                let userdata={
+                    email:userInfo.email,
+                    name:userInfo.name,
+                    medicineBought:[]
+                }
+                cb(err,userdata);
               });
          }
        else{
         console.log("Found the following records");
         console.log(docs)
-        cb(null,docs);
+        cb(null,docs[0]);
        }
         });
 

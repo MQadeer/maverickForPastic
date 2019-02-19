@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import { Text, View, BackHandler, ScrollView, Alert, Image } from 'react-native';
 import {
-    Button, Icon,Left, Header, Title, Card, CardItem,
+    Button, Icon,Left, Header, Title,
 } from "native-base";
 import { styles } from './style';
 
-export default class News extends Component {
+export default class Report extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -40,19 +40,11 @@ export default class News extends Component {
                     <Title style={{
                         fontSize: 28, color: "#1BB9C4", fontFamily: 'Algerian', alignSelf: "center"
                         // backgroundColor: "#1BB9C4"
-                    }}>Community Updates</Title>
+                    }}>Report</Title>
                 </Header>
                 <ScrollView>
                     <View>
-                        <Card transparent style={styles.cards}>
-                            <CardItem style={styles.carditems}>
-                                <View style={{}}>
-                                    <Text style={styles.headText}>CASE OF PANAMA</Text>
-                                    <Text style={styles.text}>Government officials there unwittingly mixed diethylene glycol into 260,000 bottles of cold medicine 
-                                    Families have reported 365 deaths from the poison.</Text>
-                                </View>
-                            </CardItem>
-                        </Card>
+
                     </View>
                 </ScrollView>
 
