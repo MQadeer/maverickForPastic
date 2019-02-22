@@ -5,7 +5,7 @@ import {
   BackHandler,
   ScrollView
 } from 'react-native';
-import { Content, ListItem, Left, Body, Button, View, Icon } from 'native-base';
+import { Content, ListItem, Left, Body, Button, View, Icon,Label } from 'native-base';
 import { styles } from './style';
 
 
@@ -76,8 +76,8 @@ export default class Sidebar extends Component {
                     name="newspaper-o" onPress={this.gotoNews} />
                 </Button>
               </Left>
-              <Body style={{ }}>
-                <Text style={{ fontSize: 20, alignSelf: 'center' }}>News</Text>
+              <Body style={{ }} onPress={this.gotoNews}>
+                <Text style={{ fontSize: 20, alignSelf: 'center' }} onPress={this.gotoNews}>News</Text>
 
               </Body>
             </ListItem>
@@ -85,8 +85,8 @@ export default class Sidebar extends Component {
               <Left>
                 <Button transparent onPress={this.gotoReport}
                   style={{}} >
-                  <Icon type="FontAwesome" style={{ fontSize: 25, color: "#1BB9C4" }}
-                    name="newspaper-o" onPress={this.gotoReport} />
+                  <Icon type="MaterialIcons" name='report' style={{ fontSize: 32, color: "#1BB9C4" }}
+                     onPress={this.gotoReport} />
                 </Button>
               </Left>
               <Body style={{ }}>

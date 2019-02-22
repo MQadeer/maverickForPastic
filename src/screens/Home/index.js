@@ -18,10 +18,10 @@ import {
   Title,
 
 } from "native-base";
-import Ripple from 'react-native-material-ripple';
+import { Grid, Col, Row } from 'react-native-easy-grid';
 import * as Animatable from "react-native-animatable";
 import AwesomeButton from 'react-native-really-awesome-button';
-import {config} from '../../config';
+import { config } from '../../config';
 
 function strToBytes(str) {
   let result = [];
@@ -61,7 +61,12 @@ export default class Home extends Component {
       progressAnimation: true
     };
   }
+
   componentDidMount() {
+    this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+      this.cancelTest();
+      return true;
+  });
     NfcManager.isSupported()
       .then(supported => {
         this.setState({ supported: true });
@@ -114,6 +119,9 @@ export default class Home extends Component {
     }
 
   }
+  gotoQRscanner=()=>{
+    this.props.navigation.navigate('QRscanner',{user:this.state.user});
+  }
 
   render() {
     let { enabled, tag, parsedText, isTestRunning } = this.state;
@@ -137,6 +145,7 @@ export default class Home extends Component {
             <Body style={{ alignItems: 'center', marginRight: 70 }}>
               <Title style={{ fontSize: 20 }}>Home</Title>
             </Body>
+
           </Header>
         </View>
 
@@ -160,25 +169,21 @@ export default class Home extends Component {
           </Button> */}
 
           {!isTestRunning && (
-            <AwesomeButton progress={false} width={150} borderRadius={5} backgroundColor="#1BB9C4"
-              style={styles.centeredBtn}
-              onPress={() => this.runTest()}><Text style={{ color: "white", fontWeight: 'bold', fontSize: 25, }}>Identify</Text></AwesomeButton>
-
+            <Grid>
+              <Col style={{alignItems:"center"}}>
+                <AwesomeButton progress={false} width={140} borderRadius={5} backgroundColor="#1BB9C4"
+                  style={styles.centeredBtn}
+                  onPress={() => this.runTest()}><Text style={{ color: "white", fontWeight: 'bold', fontSize: 25, }}>Scan NFC</Text></AwesomeButton>
+              </Col>
+              <Col style={{alignItems:"center"}}>
+                <AwesomeButton progress={false} width={140} borderRadius={5} backgroundColor="#1BB9C4"
+                  style={styles.centeredBtn}
+                  onPress={() => this.gotoQRscanner()}><Text style={{ color: "white", fontWeight: 'bold', fontSize: 25, }}>Scan QR</Text></AwesomeButton>
+              </Col>
+            </Grid>
           )}
 
-          {/* {isTestRunning && (
-            <View>
-            <Image style={{height:300,width:280, marginLeft:70,marginTop:120,borderWidth:2,}} 
-            source={require("../../media/tutorial.gif")}/>
-            <Button
-              light
-              backgroundColor="#21DDE9"
-              style={styles.centeredStopBtn}
-              onPress={() => this.cancelTest()}>
-              <Text style={{ color: "white", fontWeight: 'bold', fontSize: 25 }}>Stop</Text>
-            </Button>
-            </View>
-          )} */}
+
         </View>
       </View>
     );
@@ -219,7 +224,7 @@ export default class Home extends Component {
         let bytes = AES.decrypt(parsedText, config.enctyptionKey);
         let decryptedData = JSON.parse(bytes.toString(enc.Utf8));
         console.log("decryptedData  ", decryptedData);
-        decryptedData[8]+=1;
+        decryptedData[8] += 1;
         let parsedTextObj = {
           name: decryptedData[0], company: decryptedData[1], MFG: decryptedData[2], expiry: decryptedData[3],
           batchId: decryptedData[4], packing: decryptedData[5], description: decryptedData[6], tagId: decryptedData[7], scannedtimes: decryptedData[8]
@@ -243,6 +248,7 @@ export default class Home extends Component {
   }
   cancelTest = () => {
     console.disableYellowBox = true;
+    alert("stoped");
     NfcManager.cancelTechnologyRequest();
     this.setState({ isTestRunning: false });
   }

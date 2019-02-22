@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, BackHandler, ScrollView, Alert, Image } from 'react-native';
 import {
-    Button, Icon,Left, Header, Title,
+    Button, Icon, Left, Header, Title,Content,Input,Item,Textarea,Label
 } from "native-base";
 import { styles } from './style';
 
@@ -43,11 +43,19 @@ export default class Report extends Component {
                     }}>Report</Title>
                 </Header>
                 <ScrollView>
-                    <View>
-
-                    </View>
+                    <Content style={{marginTop:20,padding:10}}>
+                        <Item style={{borderBottomColor:"#1BB9C4",borderBottomWidth:2 }}>
+                            <Icon active name='home' />
+                            <Input placeholder='Name'/>
+                        </Item>
+                        <Item>
+                            <Icon active name='swap' />
+                            <Textarea style={{
+                            
+                            }}  rowSpan={5} bordered placeholder="Complaint" />
+                        </Item>
+                    </Content>
                 </ScrollView>
-
             </View>
         )
     }
