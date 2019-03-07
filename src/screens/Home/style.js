@@ -1,5 +1,4 @@
 
-
 export default (styles = {
   
   
@@ -11,7 +10,6 @@ export default (styles = {
   },
   centeredBtn: {
     click:'pointer',
-    width: 150,
     height:62,
     borderRadius:10,    
     marginTop:350,
@@ -20,7 +18,6 @@ export default (styles = {
   
   gifstyles: {
 
-    position:"absolute",
     height:400,
     width:470,
     

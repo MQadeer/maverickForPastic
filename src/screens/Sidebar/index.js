@@ -68,7 +68,7 @@ export default class Sidebar extends Component {
               </ListItem>
             })} */}
 
-            <ListItem icon style={styles.barLinkContainer} onPress={() => this.props.navigation.navigate("Homes")}>
+            <ListItem icon style={styles.barLinkContainer} onPress={this.gotoNews}>
               <Left>
                 <Button transparent onPress={this.gotoNews}
                   style={{}} >
@@ -81,7 +81,7 @@ export default class Sidebar extends Component {
 
               </Body>
             </ListItem>
-            <ListItem icon style={styles.barLinkContainer} onPress={() => this.props.navigation.navigate("Homes")}>
+            <ListItem icon style={styles.barLinkContainer} onPress={this.gotoReport}>
               <Left>
                 <Button transparent onPress={this.gotoReport}
                   style={{}} >

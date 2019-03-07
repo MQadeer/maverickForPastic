@@ -6,7 +6,7 @@ import {
     Text,
     TouchableOpacity,
     View, BackHandler,
-    Linking,
+    Linking,Alert,
 } from 'react-native';
 import {Header,Title,Right,Left,Button,Icon,Body} from 'native-base';
 import styles from './style';
@@ -40,19 +40,20 @@ export default class QRscanner extends Component {
         Linking
         // .openURL(e.data)
         console.log("user  ",this.state.user);
-        console.log("qrcode data  ",e.data);
-        let decryptedData=JSON.parse(e.data);
-        let scannedData = {
-            name: decryptedData[0], company: decryptedData[1], MFG: decryptedData[2], expiry: decryptedData[3],
-            batchId: decryptedData[4], packing: decryptedData[5], description: decryptedData[6], tagId: decryptedData[7], scannedtimes: decryptedData[8]
-        }
-        this.setState({
-            medicine:scannedData
-        })
+        console.log("qrcode data  ",e);
+        // let decryptedData=JSON.parse(e.data);
+        // let scannedData = {
+        //     name: decryptedData[0], company: decryptedData[1], MFG: decryptedData[2], expiry: decryptedData[3],
+        //     batchId: decryptedData[4], packing: decryptedData[5], description: decryptedData[6], tagId: decryptedData[7], scannedtimes: decryptedData[8]
+        // }
+        // this.setState({
+        //     medicine:scannedData
+        // })
+        Alert.alert("QRCode Data",e.data);
         this.gotoOfflineScreen();
     }
     gotoOfflineScreen=()=>{
-        this.props.navigation.navigate('Offline',{medicine: this.state.medicine, user: this.state.user });
+        this.props.navigation.navigate('Homes',{user: this.state.user });
     }
 
     render() {

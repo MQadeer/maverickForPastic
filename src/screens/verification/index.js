@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Text, View, BackHandler, ScrollView, Alert, Image } from 'react-native';
 import {
     Button, Icon,
-    Right, Left, Header, Title, Card, CardItem,
+    Right, Left, Header, Title, Card, CardItem, Body,
 } from "native-base";
 import { styles } from './style';
 
@@ -33,15 +33,17 @@ export default class index extends Component {
             <View style={{ flex: 1 }}>
                 <Header style={{ backgroundColor: 'white' }}>
                     <Left>
-                        <Button transparent onPress={() => { this.props.navigation.navigate('Homes') }}
-                            style={{ marginLeft: -50 }} >
+                        <Button transparent onPress={() => { this.props.navigation.navigate('Homes') }}>
                             <Icon type="Ionicons" name="md-arrow-back" style={{ color: "#1BB9C4", fontSize: 40 }} />
                         </Button>
                     </Left>
+                    <Body style={{alignContent:"center"}}>
                     <Title style={{
                         fontSize: 28, color: "#1BB9C4", fontFamily: 'Algerian', alignSelf: "center"
                         // backgroundColor: "#1BB9C4"
                     }}>Medicine Status</Title>
+                    </Body>
+                    
                 </Header>
                 <ScrollView>
                     <View>
@@ -52,12 +54,12 @@ export default class index extends Component {
                                     <Text style={{fontSize:18,color:"red"}}>{this.state.medicine.status}</Text>
                                 </View>
                             </CardItem>
-                            {/* <CardItem style={styles.carditems}>
+                            <CardItem style={styles.carditems}>
                                 <View style={{}}>
                                     <Text style={styles.headText}>Sold On  </Text>
                                     <Text style={styles.text}>{this.state.medicine.soldOnDate}</Text>
                                 </View>
-                            </CardItem> */}
+                            </CardItem>
                             <CardItem style={styles.carditems}>
                                 <View style={{}}>
                                     <Text style={styles.headText}>Description </Text>

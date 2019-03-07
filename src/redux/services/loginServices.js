@@ -1,11 +1,11 @@
-import config from '../../config';
+import {config} from '../../config';
 import store from '../store';
 
 export default NFCservices = {
 
     addUser: function (user) {
         fetch(`http://${config.systemip}/addUser`, {
-            // fetch('https://maverickbackend.azurewebsites.net/addUser', {
+            // fetch('https://52.173.76.33,52.165.157.71,52.165.164.201,52.176.148.33,52.176.145.195/addUser', {
 
             method: "POST",
             headers: {

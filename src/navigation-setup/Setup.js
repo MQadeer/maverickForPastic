@@ -13,7 +13,6 @@ import News from "../screens/news/index";
 import Report from "../screens/report/index";
 import QRscanner from "../screens/QRscanner/index";
 
-
 import DrawerScreen from "../screens/Sidebar";
 
 const HomeStack = createStackNavigator(

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { ImageBackground, BackHandler, Image, Alert, ToastAndroid } from "react-native";
-import NfcManager, { NdefParser, NfcTech } from 'react-native-nfc-manager';
-import { AES, enc } from 'react-native-crypto-js';
+import { Modal, BackHandler, Image, Alert, ToastAndroid } from "react-native";
+import NfcManager, { NdefParser, NfcTech, nfcManager } from 'react-native-nfc-manager';
+import { AES, enc, } from 'react-native-crypto-js';
 import styles from "./style";
 import {
   Text,
@@ -64,14 +64,14 @@ export default class Home extends Component {
 
   componentDidMount() {
     this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-      this.cancelTest();
+
       return true;
-  });
+    });
     NfcManager.isSupported()
       .then(supported => {
         this.setState({ supported: true });
         if (supported) {
-          this.startNfc();
+          // this.startNfc();
         }
       })
     this.setState({
@@ -81,8 +81,6 @@ export default class Home extends Component {
 
   componentWillUnmount() {
     this.backHandler.remove();
-
-
   }
 
   closeDrawer = () => {
@@ -94,33 +92,32 @@ export default class Home extends Component {
 
   showCheck = () => {
 
-    if (true) {
-      // this.setState({
-      //   checked: true
-      // })
-      // setTimeout(() => {
-      //   this.props.navigation.navigate('Offline', { medicine: this.state.parsedText, user: this.state.user });
-      //   this.setState({
-      //     checked: false
-      //   })
-      // }, 1000)
+    if (this.state.tag.id == this.state.parsedText.tagId) {
+      console.log("its show check");
+
+      this.cancelTest();
       this.setState({
-        progressAnimation: true
+        progressAnimation: true,
       })
       this.props.navigation.navigate('Offline', { medicine: this.state.parsedText, user: this.state.user });
-
     }
     else {
       Alert.alert(
         "Warning",
-        "This Medicine is UnAuthorized"
+        "This Product is UnAuthorized"
       )
       this.state.cancelTest();
     }
 
   }
-  gotoQRscanner=()=>{
-    this.props.navigation.navigate('QRscanner',{user:this.state.user});
+  closeModal() {
+    // this.cancelTest();
+    this.setState({ modalVisible: false, isTestRunning: false });
+    NfcManager.closeTechnology()
+    NfcManager.unregisterTagEvent();
+  }
+  gotoQRscanner = () => {
+    this.props.navigation.navigate('QRscanner', { user: this.state.user });
   }
 
   render() {
@@ -128,9 +125,31 @@ export default class Home extends Component {
     return (
       <View>
         {/* {!enabled && (alert("Please Turn on your Phones NFC First"))} */}
-        {
-          console.log("screen props are ", this.state.user)
-        }
+        <Modal
+          animationType="slide"
+          style={{ backgroundColor: "white" }}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {
+            this.closeModal()
+          }}>
+          <View style={{ marginTop: 10 }}>
+            {/* <Animatable.Image animation="fadeInDown" source={require("../../media/tutorial.gif")}
+              style={styles.gifstyles} /> */}
+
+            <Button onPress={() => { this.closeModal() }} style={{
+              backgroundColor: "white", color: "black"
+            }}>
+              <Icon type="MaterialCommunityIcons" name="window-close" onPress={() => { this.closeModal() }}
+                style={{ color: "black", fontSize: 35 }}>
+              </Icon>
+            </Button>
+            <Text style={{ fontSize: 17, marginTop: 10 }}>Tap your Phone on Medicine Bottle's Cap</Text>
+            <Image source={require("../../media/tutorial.gif")} style={styles.gifstyles} />
+            {/* <Animatable.Text animation="fadeInDown" style={{ fontSize: 17, marginTop: 10 }}>Tap your Phone on Medicine Bottle's Cap</Animatable.Text> */}
+
+          </View>
+
+        </Modal>
         <View >
           <Header style={{ backgroundColor: '#1BB9C4' }}>
 
@@ -151,11 +170,13 @@ export default class Home extends Component {
 
 
         <View style={styles.screenOverlay}>
-          {isTestRunning && (<View style={{ marginTop: 7 }}>
+
+          {/* {isTestRunning && (<View style={{ marginTop: 7 }}>
             <Animatable.Image animation="fadeInDown" source={require("../../media/tutorial.gif")}
               style={styles.gifstyles} />
             <Animatable.Text animation="fadeInDown" style={{ fontSize: 17, marginTop: 10 }}>Tap your Phone on Medicine Bottle's Cap</Animatable.Text></View>
-          )}
+          )} */}
+
           {/* <Button
             light
             backgroundColor="#1BB9C4"
@@ -170,12 +191,12 @@ export default class Home extends Component {
 
           {!isTestRunning && (
             <Grid>
-              <Col style={{alignItems:"center"}}>
-                <AwesomeButton progress={false} width={140} borderRadius={5} backgroundColor="#1BB9C4"
+              <Col style={{ alignItems: "center" }}>
+                {this.state.supported && <AwesomeButton progress={false} width={140} borderRadius={5} backgroundColor="#1BB9C4"
                   style={styles.centeredBtn}
-                  onPress={() => this.runTest()}><Text style={{ color: "white", fontWeight: 'bold', fontSize: 25, }}>Scan NFC</Text></AwesomeButton>
+                  onPress={() => this.runTest()}><Text style={{ color: "white", fontWeight: 'bold', fontSize: 25, }}>Scan NFC</Text></AwesomeButton>}
               </Col>
-              <Col style={{alignItems:"center"}}>
+              <Col style={{ alignItems: "center" }}>
                 <AwesomeButton progress={false} width={140} borderRadius={5} backgroundColor="#1BB9C4"
                   style={styles.centeredBtn}
                   onPress={() => this.gotoQRscanner()}><Text style={{ color: "white", fontWeight: 'bold', fontSize: 25, }}>Scan QR</Text></AwesomeButton>
@@ -189,9 +210,8 @@ export default class Home extends Component {
     );
   }
   runTest = () => {
-
     const cleanUp = () => {
-      this.setState({ isTestRunning: false });
+      this.setState({ isTestRunning: false, });
       NfcManager.closeTechnology()
       NfcManager.unregisterTagEvent();
     }
@@ -209,7 +229,8 @@ export default class Home extends Component {
     }
     this.setState({
       isTestRunning: true,
-      progressAnimation: false
+      progressAnimation: false,
+      modalVisible: true
     });
     NfcManager.registerTagEvent(tag => console.log(tag))
       .then(() => NfcManager.requestTechnology(NfcTech.Ndef))
@@ -221,7 +242,7 @@ export default class Home extends Component {
         console.log("tag set ", tag)
         let parsedText = parseText(tag);
         // parsedText = JSON.parse(parsedText);
-        let bytes = AES.decrypt(parsedText, config.enctyptionKey);
+        let bytes = AES.decrypt(parsedText, config.encryptionKey);
         let decryptedData = JSON.parse(bytes.toString(enc.Utf8));
         console.log("decryptedData  ", decryptedData);
         decryptedData[8] += 1;
@@ -235,23 +256,33 @@ export default class Home extends Component {
           parsedText: parsedTextObj
         });
         console.log("state tag ", this.state.tag);
-        console.log("state text ", this.state.parsedText);
+        console.log("state parsedtext ", this.state.parsedText);
         return decryptedData
       }).then((text) => {
-        let encrytedData = AES.encrypt(JSON.stringify(text), config.enctyptionKey);
+        let encrytedData = AES.encrypt(JSON.stringify(text), config.encryptionKey);
         NfcManager.writeNdefMessage(buildTextPayload(encrytedData.toString()))
       })
       .then(cleanUp)
       .then(() => {
         this.showCheck();
+      }).catch(err => {
+        if (err) {
+          this.setState({
+            modalVisible: false, isTestRunning: false
+          });
+          alert("NFC Tag is corrupted or not from authorized company", err);
+          cleanUp();
+        }
       })
   }
   cancelTest = () => {
-    console.disableYellowBox = true;
-    alert("stoped");
-    NfcManager.cancelTechnologyRequest();
-    this.setState({ isTestRunning: false });
+    // console.disableYellowBox = true;
+    this.setState({ isTestRunning: false, modalVisible: false });
+    // NfcManager.cancelTechnologyRequest();
+    NfcManager.closeTechnology()
+    NfcManager.unregisterTagEvent();
   }
+
   startNfc = () => {
     NfcManager.start()
       .then(() => NfcManager.isEnabled())

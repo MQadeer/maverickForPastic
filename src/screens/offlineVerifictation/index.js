@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { Text, View, BackHandler, ScrollView, Alert, Image } from 'react-native';
 import {
     Button, Icon,
-    Right, Left, Header, Title, Card, CardItem,
+    Right, Left, Header, Title, Card, CardItem, Body,
 } from "native-base";
 import { styles } from './style';
 import AwesomeButton from 'react-native-really-awesome-button';
-import {config} from '../../config';
+import { config } from '../../config';
 import store from '../../redux/store';
+import Geocoder from 'react-native-geocoder';
 
 export default class Offline extends Component {
     constructor(props) {
@@ -49,54 +50,59 @@ export default class Offline extends Component {
                 <Header style={{ backgroundColor: 'white' }}>
                     <Left>
                         <Button transparent onPress={() => { this.props.navigation.navigate('Homes') }}
-                            style={{ marginLeft: -50 }} >
+                            style={{ }} >
                             <Icon type="Ionicons" name="md-arrow-back" style={{ color: "#1BB9C4", fontSize: 40 }} />
                         </Button>
                     </Left>
-                    <Title style={{
-                        fontSize: 28, color: "#1BB9C4", fontFamily: 'Algerian', alignSelf: "center"
-                        // backgroundColor: "#1BB9C4"
-                    }}>Medicine Status</Title>
+                    <Body style={{alignContent:"center"}}>
+                        <Title style={{
+                            fontSize: 28, color: "#1BB9C4", fontFamily: 'Algerian', alignSelf: "center"
+                            // backgroundColor: "#1BB9C4"
+                        }}>Medicine Status</Title>
+                    </Body>
+                        {/* <Right/> */}
                 </Header>
                 <ScrollView>
-                <View>
-                    <View style={{}}>                        
-                        {/* <Image source={require(`../../media/${this.state.medicine.company}.jpg`)} style={{ */}
-                        <Image source={require('../../media/bayer.jpg')} style={{
-                            marginTop: 8
-                            , alignSelf: "center", height: 120, width: 120, borderRadius: 100, borderColor: '1BB9C4', borderWidth: 5,
-                        }} />
-                        <Text style={{
-                            fontSize: 24, color: "black", marginTop: 3,
-                            fontFamily: 'Algerian', alignSelf: "center"
-                        }}>{this.state.medicine.name}</Text>
-                        <Text style={{
-                            fontSize: 24, 
-                            fontFamily: 'Algerian', alignSelf: "center"
-                        }}>{"By "+this.state.medicine.company}</Text>
-                    </View>
-                    <View style={{ marginTop: 10, flexDirection: "row", justifyContent: "center" }}>
-                        <View style={{ borderRightWidth: 2, borderRightColor: "#95a5a6" }}>
-                            <Text style={{ marginRight: 20, color: "black", fontSize: 18, }}>Scanned  </Text>
-                            <Text style={{ marginRight: 20, alignSelf: "center", fontSize: 15, }}>{this.state.medicine.scannedtimes+" Times"} </Text>
+                    <View>
+                        <View style={{}}>
+                            {/* <Image source={require(`../../media/${this.state.medicine.company}.jpg`)} style={{ */}
+                            <Image source={require('../../media/medLogo.png')} style={{
+                                marginTop: 8
+                                , alignSelf: "center", height: 120, width: 120, borderRadius: 100, borderColor: '1BB9C4', borderWidth: 5,
+                            }} />
+                            <Text style={{
+                                fontSize: 24, color: "black", marginTop: 3,
+                                fontFamily: 'Algerian', alignSelf: "center"
+                            }}>{this.state.medicine.name}</Text>
+                            <Text style={{
+                                fontSize: 24,
+                                fontFamily: 'Algerian', alignSelf: "center"
+                            }}>{"By " + this.state.medicine.company}</Text>
                         </View>
-                        <View >
-                            <Text style={{ marginLeft: 25, color: "black", fontSize: 18, }}>Packing </Text>
-                            <Text style={{ marginLeft: 25, fontSize: 15, alignSelf: "center" }}>{this.state.medicine.packing} </Text>
+                        <View style={{ marginTop: 10, flexDirection: "row", justifyContent: "center" }}>
+                            <View style={{ borderRightWidth: 2, borderRightColor: "#95a5a6" }}>
+                                <Text style={{ marginRight: 20, color: "black", fontSize: 18, }}>Scanned  </Text>
+                                <Text style={{ marginRight: 20, alignSelf: "center", fontSize: 15, }}>{this.state.medicine.scannedtimes + " Times"} </Text>
+                            </View>
+                            <View >
+                                <Text style={{ marginLeft: 25, color: "black", fontSize: 18, }}>Packing </Text>
+                                <Text style={{ marginLeft: 25, fontSize: 15, alignSelf: "center" }}>{this.state.medicine.packing} </Text>
+                            </View>
                         </View>
-                    </View>
-                    <View style={{ marginTop: 18, justifyContent: "center" }}>
-                        <AwesomeButton progress backgroundColor="#1BB9C4" height={40} width={160} borderRadius={20} style={{
-                            alignSelf: "center",
-                            color: "white"
-                        }}
-                            onPress={this.gotoOnlineVerification} >
-                            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, backgroundColor: "#1BB9C4" }}>Verify Online</Text>
-                        </AwesomeButton>
-                    </View>
-                    <Card transparent style={styles.cards}>
-                        
-                    
+                        <View style={{ marginTop: 18, justifyContent: "center" }}>
+                            <AwesomeButton
+                                disabled={this.state.user.name ? false : true}
+                                progress backgroundColor="#1BB9C4" height={40} width={160} borderRadius={20} style={{
+                                    alignSelf: "center",
+                                    color: "white"
+                                }}
+                                onPress={this.gotoOnlineVerification} >
+                                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, backgroundColor: "#1BB9C4" }}>Verify Online</Text>
+                            </AwesomeButton>
+                        </View>
+                        <Card transparent style={styles.cards}>
+
+
                             <CardItem style={styles.carditems}>
                                 <View style={{}}>
                                     <Text style={styles.headText}>Description </Text>
@@ -121,10 +127,8 @@ export default class Offline extends Component {
                                     <Text style={styles.text}>{this.state.medicine.batchId}</Text>
                                 </View>
                             </CardItem>
-                            
-                        
-                    </Card>
-                </View>
+                        </Card>
+                    </View>
                 </ScrollView>
             </View>
         )
@@ -136,10 +140,23 @@ export default class Offline extends Component {
         navigator.geolocation.getCurrentPosition((location) => {
             console.log("position is ", location)
             if (location) {
-                this.setState({
-                    location: { latitude: location.coords.latitude, longitude: location.coords.longitude }
+                let NY = {
+                    lat: location.coords.latitude,
+                    lng: location.coords.longitude
+                };
+                Geocoder.geocodePosition(NY).then(response => {
+                    // res is an Array of geocoding object (see below)
+                    console.log("position  response ", response[0].locality, response[0].country);
+                    this.setState({
+                        location: {
+                            latitude: location.coords.latitude, longitude: location.coords.longitude,
+                            locationName: response[0].locality, country: response[0].country
+                        }
+                    })
+                }).then(() => {
+                    this.meddicineCheckRequest();
                 })
-                this.meddicineCheckRequest();
+                    .catch(err => console.log(err))
             }
         }, (err) => {
             console.log("err is ", err);
@@ -161,7 +178,7 @@ export default class Offline extends Component {
         let DateObject = new Date;
         let currentDate = DateObject.toLocaleDateString();
         fetch(`http://${config.systemip}/checkMedicine`,
-        // fetch(`https://maverickbackend.azurewebsites.net/checkMedicine`,
+            // fetch(`https://maverickbackend.azurewebsites.net/checkMedicine`,
             {
                 method: "POST",
                 headers: {
@@ -171,7 +188,8 @@ export default class Offline extends Component {
                 body: JSON.stringify({
                     medicineInfo: {
                         info: this.state.medicine, buyingDate: currentDate,
-                        location: this.state.location
+                        location: this.state.location,
+                        hash: ''
                     }, user: this.state.user
                 }),
             }

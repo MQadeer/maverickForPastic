@@ -52,14 +52,15 @@ export default class Login extends React.Component {
             //this.addUsertoDB();
 
             store.dispatch({
-                type:addUser,
-                user:this.state.user
+                type: "login",
+                user: this.state.user
             })
             this.setState({
                 logedin: true,
             })
             // return result.json();
         }).catch(err => {
+            console.log("err",err);
             Alert.alert("Network Error", "check your Internet Connection and Login Again"
                 , [{ text: "Ok", onPress: () => { BackHandler.exitApp() } }
                 ])
@@ -70,7 +71,7 @@ export default class Login extends React.Component {
     };
 
     // addUsertoDB() {
-        
+
 
     //     console.log("request performed "+this.state.user);
     //     fetch(`http://${config.systemip}/addUser`, {
@@ -98,7 +99,7 @@ export default class Login extends React.Component {
         console.disableYellowBox = true;
         return (
             <View style={{ flex: 1 }}>
-                {true ? <Navigation screenProps={{ user: this.state.user, medicineBought: this.state.medicineBought }} /> : <AzureLoginView
+                {this.state.logedin ? <Navigation screenProps={{ user: this.state.user, medicineBought: this.state.medicineBought }} /> : <AzureLoginView
                     azureInstance={this.azureInstance}
                     loadingMessage={<Image style={{ height: 250, width: 250, marginTop: -70 }} source={require('../media/200.gif')} />}
                     onSuccess={this._onLoginSuccess}

@@ -11,7 +11,9 @@ export const styles = StyleSheet.create({
         color:'black'      
     },
     item:{
-        
+        marginBottom:15,
+        borderBottomColor:"#1BB9C4",
+        borderBottomWidth:2
     }
     
 });
