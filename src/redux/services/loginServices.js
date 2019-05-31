@@ -5,8 +5,7 @@ export default NFCservices = {
 
     addUser: function (user) {
         fetch(`http://${config.systemip}/addUser`, {
-            // fetch('https://52.173.76.33,52.165.157.71,52.165.164.201,52.176.148.33,52.176.145.195/addUser', {
-
+        //fetch("https://secure-hollows-61354.herokuapp.com/addUser", {
             method: "POST",
             headers: {
                 "Accept": 'application/json',

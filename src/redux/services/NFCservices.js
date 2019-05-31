@@ -1,3 +1,5 @@
+import {config} from '../../config';
+import store from '../store';
 
 export default NFCservices={
 
@@ -5,7 +7,7 @@ export default NFCservices={
         let DateObject = new Date;
         let currentDate = DateObject.toLocaleDateString();
         fetch(`http://${config.systemip}/checkMedicine`,
-        // fetch(`https://maverickbackend.azurewebsites.net/checkMedicine`,
+        // fetch(`https://secure-hollows-61354.herokuapp.com/checkMedicine`,
             {
                 method: "POST",
                 headers: {

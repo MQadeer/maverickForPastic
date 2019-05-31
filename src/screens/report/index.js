@@ -55,12 +55,12 @@ export default class Report extends Component {
                     <Left >
 
                         <Icon onPress={() => { this.props.navigation.navigate('Homes') }}
-                            type="AntDesign" name="arrowleft" style={{ color: "#1BB9C4", fontSize: 30 }} />
+                            type="AntDesign" name="arrowleft" style={{ color: config.appColor, fontSize: 30 }} />
 
                     </Left>
                     <Body>
                         <Title style={{
-                            fontSize: 28, color: "#1BB9C4", fontFamily: 'Algerian', alignSelf: "center"
+                            fontSize: 28, color: config.appColor, fontFamily: 'Algerian', alignSelf: "center"
                             // backgroundColor: "#1BB9C4"
                         }}>Report</Title>
                     </Body>
@@ -73,9 +73,9 @@ export default class Report extends Component {
                 <ScrollView>
                     <Content style={{ marginTop: 20, padding: 10 }}>
                         <Form>
-                            <Item style={{ borderBottomColor: "#1BB9C4", borderBottomWidth: 2, marginBottom: 10 }}>
+                            <Item style={{ borderBottomColor: config.appColor, borderBottomWidth: 2, marginBottom: 10 }}>
                                 {/* <Icon active name='home' /> */}
-                                <Icon type="Ionicons" name="md-contact" style={{ color: "#1BB9C4", fontSize: 20, }} />
+                                <Icon type="Ionicons" name="md-contact" style={{ color: config.appColor, fontSize: 20, }} />
                                 {/* <Label>Name</Label> */}
                                 <Input
                                     placeholder="Name"
@@ -91,9 +91,9 @@ export default class Report extends Component {
 
 
                             </Item>
-                            <Item style={{ borderBottomColor: "#1BB9C4", borderBottomWidth: 2, marginBottom: 10 }}>
+                            <Item style={{ borderBottomColor: config.appColor, borderBottomWidth: 2, marginBottom: 10 }}>
                                 {/* <Icon active name='contact' /> */}
-                                <Icon type="Entypo" name="old-phone" style={{ color: "#1BB9C4", fontSize: 20, }} />
+                                <Icon type="Entypo" name="old-phone" style={{ color: config.appColor, fontSize: 20, }} />
                                 {/* <Label style={{marginLeft:8}}>Contact</Label> */}
                                 <Input
                                     placeholder="Contact"
@@ -105,8 +105,8 @@ export default class Report extends Component {
                                     }
                                 />
                             </Item>
-                            <Item style={{ borderBottomColor: "#1BB9C4", borderBottomWidth: 2, marginBottom: 10 }}>
-                                <Icon type='FontAwesome5' name="prescription-bottle-alt" style={{ color: "#1BB9C4", fontSize: 20, }} />
+                            <Item style={{ borderBottomColor: config.appColor, borderBottomWidth: 2, marginBottom: 10 }}>
+                                <Icon type='FontAwesome5' name="prescription-bottle-alt" style={{ color: config.appColor, fontSize: 20, }} />
                                 {/* <Label>Medcine</Label> */}
                                 <Input
                                     placeholder='Medicine'
@@ -119,7 +119,7 @@ export default class Report extends Component {
                                 />
                             </Item>
                             <Item style={styles.item}>
-                                <Icon type='FontAwesome5' name='id-card' style={{ color: "#1BB9C4", fontSize: 20 }} />
+                                <Icon type='FontAwesome5' name='id-card' style={{ color: config.appColor, fontSize: 20 }} />
                                 {/* <Label>Batch ID</Label> */}
                                 <Input
                                     placeholder="Batch ID"
@@ -131,9 +131,7 @@ export default class Report extends Component {
                                     }
                                 />
                             </Item>
-                            <Text
-                                style={{ marginLeft: 10, fontSize: 15 }}
-                            >
+                            <Text style={{ marginLeft: 10, fontSize: 15 }}>
                                 <Icon name="new-message" type="Entypo" />
                                 Complain Box
                         </Text>
@@ -161,10 +159,13 @@ export default class Report extends Component {
                                 block
                                 primary
                                 onPress={this.handleSubmit}
-                                style={{alignContent:"center",width:200,alignSelf:"center"}}
+                                style={{
+                                    alignContent: "center", width: 200, alignSelf: "center", color: config.appColor,
+                                    borderRadius: 5
+                                }}
                             >
                                 <Text
-                                    style={{ color: 'white',fontSize:24 }}
+                                    style={{ color: 'white', fontSize: 20 }}
                                 >Submit</Text>
                             </Button>
                         </Form>
@@ -189,10 +190,10 @@ export default class Report extends Component {
         )
             .then(res => {
                 console.log("res parsed  ", JSON.parse(res._bodyText));
-                res._bodyText? alert("Report submitted") : alert("Report submittion failed") ;
+                res._bodyText ? alert("Report submitted") : alert("Report submittion failed");
                 this.props.navigation.navigate('Homes');
             }).catch(err => {
-                console.log("report err ",err)
+                console.log("report err ", err)
                 Alert.alert("Network error", "Report not submitted , please Check Your internet connection", [
                     { text: "ok", onPress: () => { this.props.navigation.navigate('Homes') } }
                 ])

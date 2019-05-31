@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
-
+import {config} from '../../config';
 
 export const styles = StyleSheet.create({
     
@@ -12,7 +12,7 @@ export const styles = StyleSheet.create({
     },
     item:{
         marginBottom:15,
-        borderBottomColor:"#1BB9C4",
+        borderBottomColor:config.appColor,
         borderBottomWidth:2
     }
     

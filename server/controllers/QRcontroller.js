@@ -12,12 +12,12 @@ module.exports = {
         const Pharma = db.collection('medicines');
         const Users = db.collection('users');
 
-        Pharma.find({ tagId: medInfo.info.tagId }).toArray(function (err, doc) {
-            console.log("error is ",err)
+        Pharma.find({ productId: medInfo.info }).toArray((err, doc) => {
+
             if (doc.length >= 1) {
                 if (doc[0].status == "new") {
                     Pharma.updateOne(
-                        { tagId: medInfo.info.tagId },
+                        { productId: medInfo.info },
                         { $set: { status: "sold", soldOnDate: medInfo.buyingDate } },
                         (err, result) => {
                             if (err) throw err;
@@ -29,7 +29,7 @@ module.exports = {
                 }
                 else {
                     Pharma.find(
-                        { tagId: medInfo.info.tagId },
+                        { productId: medInfo.info },
                         (err, result) => {
                             if (err) throw err;
                             console.log(result);
@@ -55,12 +55,12 @@ module.exports = {
                 }
                 else if (result.length >= 1) {
 
-                    const checkTagIdExist = result[0].medicineBought.filter((item) => {
-                        return item.tagId == medInfo.tagId
+                    const checkproductIdExist = result[0].medicineBought.filter((item) => {
+                        return item.productId == medInfo.productId
                     })
-                    console.log(checkTagIdExist)
-                    if (checkTagIdExist.length > 0) {
-                        // cb(err,checkTagIdExist)
+                    console.log(checkproductIdExist)
+                    if (checkproductIdExist.length > 0) {
+                        // cb(err,checkproductIdExist)
                         cb(err, medicineFound)
                     }
                     else {
@@ -94,7 +94,7 @@ module.exports = {
         const medInfo = data.medicneInfo
         const collection = db.collection('medicine');
 
-        collection.find({ tagId: medInfo.tagId }, (err, result) => {
+        collection.find({ productId: medInfo.productId }, (err, result) => {
             if (err) throw err;
             cb(err, result)
         })
@@ -105,7 +105,7 @@ module.exports = {
         const medInfo = data.medicinceInfo
         const pharma = db.collection('medicine');
         pharma.updateOne(
-            { tagId: medInfo.tagId },
+            { productId: medInfo.productId },
             { $set: { status: "sold" } },
             (err, result) => {
                 if (err) throw err;

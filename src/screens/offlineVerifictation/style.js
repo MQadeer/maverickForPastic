@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
-
+import {config} from "../../config";
 
 export const styles = StyleSheet.create({
     text: {
@@ -16,14 +16,14 @@ export const styles = StyleSheet.create({
     carditems: {
         marginRight: 14,
         marginLeft: 14,
-        borderBottomColor: "#1BB9C4",
+        borderBottomColor: config.appColor,
         borderBottomWidth: 1
     },
     cardBtn: {
         justifyContent: 'center',
         borderRadius: 7,
         width: 150,
-        backgroundColor: "#21DDE9",
+        backgroundColor: config.appColor,
 
     }
 });

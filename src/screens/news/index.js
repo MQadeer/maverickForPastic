@@ -74,12 +74,12 @@ export default class News extends Component {
                     <Left >
 
                         <Icon onPress={() => { this.props.navigation.navigate('Homes') }}
-                            type="AntDesign" name="arrowleft" style={{ color: "#1BB9C4", fontSize: 30 }} />
+                            type="AntDesign" name="arrowleft" style={{ color: config.appColor, fontSize: 30 }} />
 
                     </Left>
                     <Body>
                         <Title style={{
-                            fontSize: 28, color: "#1BB9C4", fontFamily: 'Algerian', alignSelf: "center"
+                            fontSize: 28, color: config.appColor, fontFamily: 'Algerian', alignSelf: "center"
                             // backgroundColor: "#1BB9C4"
                         }}>News</Title>
                     </Body>
@@ -172,19 +172,15 @@ export default class News extends Component {
                                         </CardItem>
                                         <CardItem footer bordered>
                                             <Body>
-
                                                 <Button iconLeft light>
                                                     <Icon name='share' />
                                                     <Text>share</Text>
                                                 </Button>
                                             </Body>
                                         </CardItem>
-
-
                                     </Card>
                                 )
                             })
-
                     }
                 </Content>
             </Container>

@@ -1,5 +1,4 @@
 import {StyleSheet} from 'react-native'
-
 let styles = StyleSheet.create({
     centerText: {
       flex: 1,

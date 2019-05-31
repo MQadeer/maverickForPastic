@@ -1,5 +1,5 @@
 import NFCservices from '../services/NFCservices';
-
+import QRservices from "../services/QRservices";
 const reducer= (state={tagData:{}},action )=>{
     switch(action.type){
         case 'showOfflineData':
@@ -9,7 +9,9 @@ const reducer= (state={tagData:{}},action )=>{
             }
             // NFCservices.showDecryptedData(action.medicineInfo);
         case 'verifyOnline':
-            NFCservices.verifyOnline()
+            NFCservices.verifyOnline();
+        case 'QRverifyOnline':
+            QRservices.verifyOnline(action.payload);
         default:
             return{
                 ...state
@@ -17,5 +19,4 @@ const reducer= (state={tagData:{}},action )=>{
     }
     
 };
-
 export default reducer;

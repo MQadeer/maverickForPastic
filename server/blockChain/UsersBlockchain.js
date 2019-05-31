@@ -26,7 +26,7 @@ class BlockChain {
         mongoClient.connect(cosmosdb_string, { useNewUrlParser: true })
         .then(client => {
             console.log("Connected successfully to server")
-            let db=client.db('maverick');
+            let db=client.db('medicareapp');
             let chain=db.collection('UsersConsumptionBlockchain').find();
             chain.toArray((err,resp)=>{
                 if(resp.length==0){

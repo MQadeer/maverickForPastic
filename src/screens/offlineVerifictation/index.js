@@ -9,6 +9,7 @@ import AwesomeButton from 'react-native-really-awesome-button';
 import { config } from '../../config';
 import store from '../../redux/store';
 import Geocoder from 'react-native-geocoder';
+import SendSMS from 'react-native-sms';
 
 export default class Offline extends Component {
     constructor(props) {
@@ -51,12 +52,12 @@ export default class Offline extends Component {
                     <Left>
                         <Button transparent onPress={() => { this.props.navigation.navigate('Homes') }}
                             style={{ }} >
-                            <Icon type="Ionicons" name="md-arrow-back" style={{ color: "#1BB9C4", fontSize: 40 }} />
+                            <Icon type="Ionicons" name="md-arrow-back" style={{ color: config.appColor, fontSize: 40 }} />
                         </Button>
                     </Left>
                     <Body style={{alignContent:"center"}}>
                         <Title style={{
-                            fontSize: 28, color: "#1BB9C4", fontFamily: 'Algerian', alignSelf: "center"
+                            fontSize: 28, color: config.appColor, fontFamily: 'Algerian', alignSelf: "center"
                             // backgroundColor: "#1BB9C4"
                         }}>Medicine Status</Title>
                     </Body>
@@ -68,7 +69,7 @@ export default class Offline extends Component {
                             {/* <Image source={require(`../../media/${this.state.medicine.company}.jpg`)} style={{ */}
                             <Image source={require('../../media/medLogo.png')} style={{
                                 marginTop: 8
-                                , alignSelf: "center", height: 120, width: 120, borderRadius: 100, borderColor: '1BB9C4', borderWidth: 5,
+                                , alignSelf: "center", height: 120, width: 120, borderRadius: 100, borderColor: config.appColor, borderWidth: 5,
                             }} />
                             <Text style={{
                                 fontSize: 24, color: "black", marginTop: 3,
@@ -80,7 +81,7 @@ export default class Offline extends Component {
                             }}>{"By " + this.state.medicine.company}</Text>
                         </View>
                         <View style={{ marginTop: 10, flexDirection: "row", justifyContent: "center" }}>
-                            <View style={{ borderRightWidth: 2, borderRightColor: "#95a5a6" }}>
+                            <View style={{ borderRightWidth: 2, borderRightColor: config.appColor }}>
                                 <Text style={{ marginRight: 20, color: "black", fontSize: 18, }}>Scanned  </Text>
                                 <Text style={{ marginRight: 20, alignSelf: "center", fontSize: 15, }}>{this.state.medicine.scannedtimes + " Times"} </Text>
                             </View>
@@ -92,12 +93,22 @@ export default class Offline extends Component {
                         <View style={{ marginTop: 18, justifyContent: "center" }}>
                             <AwesomeButton
                                 disabled={this.state.user.name ? false : true}
-                                progress backgroundColor="#1BB9C4" height={40} width={160} borderRadius={20} style={{
+                                progress backgroundColor={config.appColor} height={40} width={160} borderRadius={20} style={{
                                     alignSelf: "center",
                                     color: "white"
                                 }}
                                 onPress={this.gotoOnlineVerification} >
-                                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, backgroundColor: "#1BB9C4" }}>Verify Online</Text>
+                                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, backgroundColor: config.appColor }}>Verify Online</Text>
+                            </AwesomeButton>
+                        </View>
+                        <View style={{ marginTop: 18, justifyContent: "center" }}>
+                            <AwesomeButton
+                                progress backgroundColor={config.appColor} height={40} width={160} borderRadius={20} style={{
+                                    alignSelf: "center",
+                                    color: "white"
+                                }}
+                                onPress={this.verifyBySms} >
+                                <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20, backgroundColor:config.appColor }}>Verify By SMS</Text>
                             </AwesomeButton>
                         </View>
                         <Card transparent style={styles.cards}>
@@ -202,5 +213,15 @@ export default class Offline extends Component {
                     { text: "ok", onPress: () => { this.props.navigation.navigate('Homes') } }
                 ])
             })
+    }
+    verifyBySms=()=>{
+        SendSMS.send({
+            body: e.data,
+            recipients: ['03044160930'],
+            successTypes: ['sent', 'queued'],
+            allowAndroidSendWithoutReadPermission: true
+        }, (completed, cancelled, error) => {
+            console.log('SMS Callback: completed: ' + completed + ' cancelled: ' + cancelled + 'error: ' + error);
+        })
     }
 }

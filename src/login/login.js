@@ -43,7 +43,6 @@ export default class Login extends React.Component {
         this.azureInstance.getUserInfo().then(result => {
             // console.log(result);
             this.setState({
-
                 user: {
                     name: result.displayName,
                     email: result.userPrincipalName,

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Modal, BackHandler, Image, Alert, ToastAndroid } from "react-native";
+import { Modal, BackHandler, Image, Alert, ToastAndroid,StatusBar } from "react-native";
 import NfcManager, { NdefParser, NfcTech, nfcManager } from 'react-native-nfc-manager';
 import { AES, enc, } from 'react-native-crypto-js';
 import styles from "./style";
@@ -124,6 +124,7 @@ export default class Home extends Component {
     let { enabled, tag, parsedText, isTestRunning } = this.state;
     return (
       <View>
+        <StatusBar backgroundColor="red"></StatusBar>
         {/* {!enabled && (alert("Please Turn on your Phones NFC First"))} */}
         <Modal
           animationType="slide"
@@ -137,10 +138,10 @@ export default class Home extends Component {
               style={styles.gifstyles} /> */}
 
             <Button onPress={() => { this.closeModal() }} style={{
-              backgroundColor: "white", color: "black"
+              backgroundColor: config.appColor,
             }}>
               <Icon type="MaterialCommunityIcons" name="window-close" onPress={() => { this.closeModal() }}
-                style={{ color: "black", fontSize: 35 }}>
+                style={{ color: "white", fontSize: 20 }}>
               </Icon>
             </Button>
             <Text style={{ fontSize: 17, marginTop: 10 }}>Tap your Phone on Medicine Bottle's Cap</Text>
@@ -151,7 +152,7 @@ export default class Home extends Component {
 
         </Modal>
         <View >
-          <Header style={{ backgroundColor: '#1BB9C4' }}>
+          <Header style={{ backgroundColor: config.appColor }}>
 
             <Left>
 
@@ -192,14 +193,16 @@ export default class Home extends Component {
           {!isTestRunning && (
             <Grid>
               <Col style={{ alignItems: "center" }}>
-                {this.state.supported && <AwesomeButton progress={false} width={140} borderRadius={5} backgroundColor="#1BB9C4"
+                {this.state.supported && <AwesomeButton progress={false} width={140} borderRadius={5} backgroundColor= {config.appColor}
                   style={styles.centeredBtn}
-                  onPress={() => this.runTest()}><Text style={{ color: "white", fontWeight: 'bold', fontSize: 25, }}>Scan NFC</Text></AwesomeButton>}
+                  onPress={() => this.runTest()}><Text style={{ color: "white",  fontSize: 18,fontFamily:"notoserif" }}>Scan</Text>
+                  <Text style={{ color: "white", fontWeight: 'bold', fontSize: 22,fontFamily:'notoserif'}}> NFC</Text></AwesomeButton>}
               </Col>
               <Col style={{ alignItems: "center" }}>
-                <AwesomeButton progress={false} width={140} borderRadius={5} backgroundColor="#1BB9C4"
+                <AwesomeButton progress={false} width={140} borderRadius={5} backgroundColor={config.appColor}
                   style={styles.centeredBtn}
-                  onPress={() => this.gotoQRscanner()}><Text style={{ color: "white", fontWeight: 'bold', fontSize: 25, }}>Scan QR</Text></AwesomeButton>
+                  onPress={() => this.gotoQRscanner()}><Text style={{ color: "white", fontSize: 18, }}>Scan</Text>
+                  <Text style={{ color: "white", fontWeight: 'bold', fontSize: 25, }}> QR</Text></AwesomeButton>
               </Col>
             </Grid>
           )}
