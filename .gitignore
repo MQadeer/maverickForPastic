@@ -36,6 +36,9 @@ node_modules/
 server/node_modules
 npm-debug.log
 yarn-error.log
+src/config.js
+server/config
+package-lock.json
 
 # BUCK
 buck-out/
