@@ -20,7 +20,7 @@
     "react-native-geocoder": "^0.5.0",
     "react-native-gesture-handler": "^1.0.12",
     "react-native-material-ripple": "^0.8.0",
-    "react-native-nfc-manager": "^1.1.2",
+    "react-native-nfc-manager": "^1.2.2",
     "react-native-qrcode-scanner": "^1.1.2",
     "react-native-really-awesome-button": "^0.8.3",
     "react-native-sms": "^1.9.0",

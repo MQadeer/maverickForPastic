@@ -1,21 +1,15 @@
 import React, { Component } from 'react';
 
 import {
-    AppRegistry,
-    StyleSheet,
     Text,
-    TouchableOpacity,
     View, BackHandler,
-    Linking, Alert,Dimensions
+    Linking, Alert, Dimensions
 } from 'react-native';
 import { Header, Title, Right, Left, Button, Icon, Body } from 'native-base';
-import styles from './style';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-import store from '../../redux/store';
 import SendSMS from 'react-native-sms';
-import { connect } from "react-redux";
 import Geocoder from 'react-native-geocoder';
-import {config} from '../../config';
+import { config } from '../../config';
 
 
 
@@ -46,9 +40,6 @@ export default class QRscanner extends Component {
 
     onSuccess(e) {
         Linking
-        // .openURL(e.data)
-        console.log("user  ", this.state.user);
-        console.log("qrcode data  ", e);
         type:
         Alert.alert("QRCode Data", e.data, [
             {
@@ -93,14 +84,16 @@ export default class QRscanner extends Component {
                             <Icon type="Ionicons" name="md-arrow-back" style={{ color: config.appColor, fontSize: 40 }} />
                         </Button>
                     </Left>
-                    <Body style={{alignItems:'center',alignContent:'center'}}>
+                    <Body style={{ alignItems: 'center', alignContent: 'center' }}>
                         <Title style={{
                             fontSize: 28, color: config.appColor, fontFamily: 'Algerian', alignSelf: "center",
-                            alignContent:'center',justifyContent:'center'
+                            alignContent: 'center', justifyContent: 'center'
                             // backgroundColor: "#1BB9C4"
-                        }}>QR 
-                        <Text style={{fontSize: 28, color: config.appColor, fontFamily: 'Algerian', 
-                        alignSelf: "center",fontSize:20}}>  Scanner</Text>
+                        }}>QR
+                        <Text style={{
+                                fontSize: 28, color: config.appColor, fontFamily: 'Algerian',
+                                alignSelf: "center", fontSize: 20
+                            }}>  Scanner</Text>
                         </Title>
                     </Body>
                 </Header>
@@ -108,7 +101,7 @@ export default class QRscanner extends Component {
                     <Text>{this.state.qrData}</Text>
                 </Modal> */}
                 <QRCodeScanner
-                    showMarker={true} fadeIn={true} cameraStyle={{height: Dimensions.get('window').height}}
+                    showMarker={true} fadeIn={true} cameraStyle={{ height: Dimensions.get('window').height }}
                     reactivate={true}
                     reactivateTimeout={2000}
                     onRead={this.onSuccess.bind(this)}
@@ -179,8 +172,12 @@ export default class QRscanner extends Component {
             }
         )
             .then(res => {
-                console.log("res parsed  ", JSON.parse(res._bodyText));
-                this.props.navigation.navigate('Verification', { verifiedMedicine: JSON.parse(res._bodyText) })
+                console.log("res parsed  QR response ", JSON.parse(res._bodyText));
+                if (JSON.parse(res._bodyText) == false) {
+                    alert("This Product is UnAuthorized")
+                } else {
+                    this.props.navigation.navigate('Verification', { verifiedMedicine: JSON.parse(res._bodyText) })
+                }
             }).catch(err => {
                 Alert.alert("Network error", "Check Your internet connection or login again ", [
                     { text: "ok", onPress: () => { this.props.navigation.navigate('Homes') } }

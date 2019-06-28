@@ -42,7 +42,8 @@ export default class Offline extends Component {
     }
 
     gotoOnlineVerification = () => {
-        this.getLocation();
+        this.state.user.name ?  this.getLocation() : alert("login with an acount first the try online verification ")
+        
 
     }
     render() {
@@ -92,7 +93,7 @@ export default class Offline extends Component {
                         </View>
                         <View style={{ marginTop: 18, justifyContent: "center" }}>
                             <AwesomeButton
-                                disabled={this.state.user.name ? false : true}
+                                // disabled={this.state.user.name ? false : true}
                                 progress backgroundColor={config.appColor} height={40} width={160} borderRadius={20} style={{
                                     alignSelf: "center",
                                     color: "white"
@@ -216,7 +217,7 @@ export default class Offline extends Component {
     }
     verifyBySms=()=>{
         SendSMS.send({
-            body: e.data,
+            body:this.state.medicine.tagId ,
             recipients: ['03044160930'],
             successTypes: ['sent', 'queued'],
             allowAndroidSendWithoutReadPermission: true

@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { Modal, BackHandler, Image, Alert, ToastAndroid,StatusBar } from "react-native";
-import NfcManager, { NdefParser, NfcTech, nfcManager } from 'react-native-nfc-manager';
-import { AES, enc, } from 'react-native-crypto-js';
+import { Modal, BackHandler, Image, Alert,StatusBar } from "react-native";
+import NfcManager, { NdefParser, NfcTech,  } from 'react-native-nfc-manager';
+// import { AES, enc, } from 'react-native-crypto-js';
+import {AES,enc} from "crypto-js";
 import styles from "./style";
 import {
   Text,
@@ -14,12 +15,9 @@ import {
   Right,
   Header,
   Body,
-
   Title,
-
 } from "native-base";
-import { Grid, Col, Row } from 'react-native-easy-grid';
-import * as Animatable from "react-native-animatable";
+import { Grid, Col } from 'react-native-easy-grid';
 import AwesomeButton from 'react-native-really-awesome-button';
 import { config } from '../../config';
 
@@ -93,8 +91,6 @@ export default class Home extends Component {
   showCheck = () => {
 
     if (this.state.tag.id == this.state.parsedText.tagId) {
-      console.log("its show check");
-
       this.cancelTest();
       this.setState({
         progressAnimation: true,
@@ -106,12 +102,10 @@ export default class Home extends Component {
         "Warning",
         "This Product is UnAuthorized"
       )
-      this.state.cancelTest();
+      this.cancelTest();
     }
-
   }
   closeModal() {
-    // this.cancelTest();
     this.setState({ modalVisible: false, isTestRunning: false });
     NfcManager.closeTechnology()
     NfcManager.unregisterTagEvent();
@@ -239,13 +233,16 @@ export default class Home extends Component {
       .then(() => NfcManager.requestTechnology(NfcTech.Ndef))
       .then(() => NfcManager.getTag())
       .then(tag => {
+        console.log("tag set ", tag)
+        this.setState({
+          tag
+        })
       })
       .then(() => NfcManager.getNdefMessage())
       .then(tag => {
-        console.log("tag set ", tag)
         let parsedText = parseText(tag);
         // parsedText = JSON.parse(parsedText);
-        let bytes = AES.decrypt(parsedText, config.encryptionKey);
+        let bytes = AES.decrypt(parsedText, "123");
         let decryptedData = JSON.parse(bytes.toString(enc.Utf8));
         console.log("decryptedData  ", decryptedData);
         decryptedData[8] += 1;
@@ -255,17 +252,16 @@ export default class Home extends Component {
         }
         console.log("parsed obj  ", parsedTextObj);
         this.setState({
-          tag,
           parsedText: parsedTextObj
         });
         console.log("state tag ", this.state.tag);
         console.log("state parsedtext ", this.state.parsedText);
         return decryptedData
       }).then((text) => {
-        let encrytedData = AES.encrypt(JSON.stringify(text), config.encryptionKey);
+        let encrytedData = AES.encrypt(JSON.stringify(text), "123");
         NfcManager.writeNdefMessage(buildTextPayload(encrytedData.toString()))
       })
-      .then(cleanUp)
+      .then(()=>cleanUp)
       .then(() => {
         this.showCheck();
       }).catch(err => {
@@ -273,6 +269,7 @@ export default class Home extends Component {
           this.setState({
             modalVisible: false, isTestRunning: false
           });
+          console.log("error ",err);
           alert("NFC Tag is corrupted or not from authorized company", err);
           cleanUp();
         }

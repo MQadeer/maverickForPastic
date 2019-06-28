@@ -12,12 +12,12 @@ module.exports = {
         const Pharma = db.collection('medicines');
         const Users = db.collection('users');
 
-        Pharma.find({ productId: medInfo.info }).toArray((err, doc) => {
+        Pharma.find({ BRcode: medInfo.info }).toArray((err, doc) => {
 
             if (doc.length >= 1) {
                 if (doc[0].status == "new") {
                     Pharma.updateOne(
-                        { productId: medInfo.info },
+                        { BRcode: medInfo.info },
                         { $set: { status: "sold", soldOnDate: medInfo.buyingDate } },
                         (err, result) => {
                             if (err) throw err;
@@ -29,7 +29,7 @@ module.exports = {
                 }
                 else {
                     Pharma.find(
-                        { productId: medInfo.info },
+                        { BRcode: medInfo.info },
                         (err, result) => {
                             if (err) throw err;
                             console.log(result);
@@ -56,7 +56,7 @@ module.exports = {
                 else if (result.length >= 1) {
 
                     const checkproductIdExist = result[0].medicineBought.filter((item) => {
-                        return item.productId == medInfo.productId
+                        return item.BRcode == medInfo.BRcode
                     })
                     console.log(checkproductIdExist)
                     if (checkproductIdExist.length > 0) {
@@ -94,7 +94,7 @@ module.exports = {
         const medInfo = data.medicneInfo
         const collection = db.collection('medicine');
 
-        collection.find({ productId: medInfo.productId }, (err, result) => {
+        collection.find({ BRcode: medInfo.BRcode }, (err, result) => {
             if (err) throw err;
             cb(err, result)
         })
@@ -105,7 +105,7 @@ module.exports = {
         const medInfo = data.medicinceInfo
         const pharma = db.collection('medicine');
         pharma.updateOne(
-            { productId: medInfo.productId },
+            { BRcode: medInfo.BRcode },
             { $set: { status: "sold" } },
             (err, result) => {
                 if (err) throw err;

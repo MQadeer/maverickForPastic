@@ -60,7 +60,7 @@ server.post("/report",function(req,res){
     MongoClient.connect(cosmosdb_string, { useNewUrlParser: true })
     .then(client => {
         console.log("Connected successfully to server");
-        const db = client.db('maverick');
+        const db = client.db('medicareapp');
         // assert.equal(null, err);
 
         pharmaController.addReport(req.body, db, function (err, data) {
@@ -84,7 +84,7 @@ server.get("/getNews", function (req, res) {
     MongoClient.connect(cosmosdb_string, { useNewUrlParser: true })
     .then(client => {
         console.log("Connected successfully to server");
-        const db = client.db('maverick');
+        const db = client.db('medicareapp');
         // assert.equal(null, err);
 
         pharmaController.getNews(db, function (err, data) {

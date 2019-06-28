@@ -1,5 +1,5 @@
 const config={
-    // systemip:"192.168.1.9:3000",
+    // systemip:"192.168.1.10:3000",
     systemip:"secure-hollows-61354.herokuapp.com",
     encryptionKey:'123',
     appColor:"#2980b9",

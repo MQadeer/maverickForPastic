@@ -194,7 +194,7 @@ export default class Report extends Component {
                 this.props.navigation.navigate('Homes');
             }).catch(err => {
                 console.log("report err ", err)
-                Alert.alert("Network error", "Report not submitted , please Check Your internet connection", [
+                Alert.alert("Network error", "submition failed , please Check Your internet connection", [
                     { text: "ok", onPress: () => { this.props.navigation.navigate('Homes') } }
                 ])
             })
